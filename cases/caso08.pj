@@ -2,5 +2,8 @@
 
 rule addProperty([o, k, v]){
      case [{}, _] -> o[k] = v
-   | case  _  -> o
+   | case  _  -> false
 }
+
+expectEQ('[{}, "age", 21]',"21");
+expectEQ('[{age:10}, "age", 21]',"false");

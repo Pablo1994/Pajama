@@ -5,3 +5,5 @@ rule sumaEdades([lp, n]){
   |case [[h when h.age>n | t], n] -> h.age + sumaEdades([t, n])
   |case [[_|t], n] -> sumaEdades([t, n])
 }
+
+expectEQ("sumaEdades([[{age:10}, {age:30}, {age:50}, {age:15}], 20])", "80");

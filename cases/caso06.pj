@@ -4,3 +4,7 @@ rule map([a, f]){
     case [[], _] -> []
   | case [[ h | t], _] -> unshift(map([t, f]), f(h))
 }
+rule square(x){
+   case x -> x*x
+}
+expectEQ("map([[1,2,3], square])", "[1,4,9]");

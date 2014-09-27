@@ -4,3 +4,5 @@ rule fact ( n ) {
   | case n -> n*fact(n-1)	
    
 } 
+
+expectEQ("fact(5)", "120");
