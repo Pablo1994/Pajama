@@ -53,7 +53,7 @@ relOperation :      arithOperation ( relOperator arithOperation)*
 ;
 relOperator :	('>' | '<' | '==' | '<=' | '>=' | '!=');
 			
-arithOperation : arithMonom operAddPlus arithMonom)*;
+arithOperation : arithMonom (operAddPlus arithMonom)*;
 arithMonom     : arithSingle (op=('*' | '/') arithSingle)*;
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
