@@ -1,1 +1,1 @@
-Pajama versión inicial.
+Todos los cambios de los video implementados, más visitArithMonom().
