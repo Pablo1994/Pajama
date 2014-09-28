@@ -71,6 +71,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         symbolTable.put(x.getValue(), e);
         return a;
     }
+
+	public SymbolEntry resetAccess(JSId x, JSAccess a){
+		SymbolEntry e = new SymbolEntry(x, NULL_OFFSET, a);
+		symbolTable.put(x.getValue(), e);
+		return e;
+	}
     public String PATH = "rt/util.js";
 
     public void genCode() {
@@ -179,7 +185,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
 		JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), X));
 		JSAst predicateRestPart, predicateComplete;
-		if(ctx.pattRestArray()!=null({
+		if(ctx.pattRestArray()!=null){
 			predicateRestPart=visit(ctx.pattRestArray());
 			JSAccess a = SLICE(X, NUM(restOffset));
 			resetAccess(X,a);
@@ -194,29 +200,6 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitPArray(PajamaParser.PArrayContext ctx) {
         System.err.println("visitPArray");
         return visit(ctx.pattArray());
-        /*if (this.offset > 0) {
-         this.stack.push(this.offset);
-         }
-         this.offset = 0;
-         List<JSAst> args = new ArrayList<JSAst>();
-         ctx.pattArray()
-         .pattList()
-         .pattern()
-         .stream()
-         .forEach((p) -> {
-         JSAst vp = visit(p);
-         if (vp != null) {
-         args.add(vp);
-         }
-         this.offset++;
-         });
-         if (!stack.empty()) {
-         this.offset = stack.pop();
-         } else {
-         this.offset = 0;
-         }
-
-         return FUNCTION(FORMALS(X), RET(APP(PATLIST, ARGS(ARRAY(args), X))));*/
     }
 
     @Override
