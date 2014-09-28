@@ -38,30 +38,11 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRelMonom(@NotNull PajamaParser.RelMonomContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#ruleBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRuleBody(@NotNull PajamaParser.RuleBodyContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ExprFalse}
-	 * labeled alternative in {@link PajamaParser#constant}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExprFalse(@NotNull PajamaParser.ExprFalseContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PajamaParser#caseRule}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitCaseRule(@NotNull PajamaParser.CaseRuleContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PajamaParser#pattern}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPattern(@NotNull PajamaParser.PatternContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PajamaParser#rules}.
 	 * @param ctx the parse tree
@@ -115,12 +96,6 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObjectExpr(@NotNull PajamaParser.ObjectExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#pattList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPattList(@NotNull PajamaParser.PattListContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ObjectAccess}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.
 	 * @param ctx the parse tree
@@ -128,17 +103,17 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitObjectAccess(@NotNull PajamaParser.ObjectAccessContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpr(@NotNull PajamaParser.ExprContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PajamaParser#arithMonom}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArithMonom(@NotNull PajamaParser.ArithMonomContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattEmpty}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattEmpty(@NotNull PajamaParser.PattEmptyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code ExprNull}
 	 * labeled alternative in {@link PajamaParser#constant}.
@@ -152,19 +127,6 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPattRest(@NotNull PajamaParser.PattRestContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PajamaParser#key}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitKey(@NotNull PajamaParser.KeyContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code DecExpr}
-	 * labeled alternative in {@link PajamaParser#arithSingle}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDecExpr(@NotNull PajamaParser.DecExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code PArray}
 	 * labeled alternative in {@link PajamaParser#pattInit}.
@@ -193,6 +155,100 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstantExpr(@NotNull PajamaParser.ConstantExprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PajamaParser#params}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParams(@NotNull PajamaParser.ParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#formal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFormal(@NotNull PajamaParser.FormalContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PatTrue}
+	 * labeled alternative in {@link PajamaParser#pattConstant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPatTrue(@NotNull PajamaParser.PatTrueContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PatString}
+	 * labeled alternative in {@link PajamaParser#pattConstant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPatString(@NotNull PajamaParser.PatStringContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#arithOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArithOperation(@NotNull PajamaParser.ArithOperationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#object}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObject(@NotNull PajamaParser.ObjectContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattRestArray}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattRestArray(@NotNull PajamaParser.PattRestArrayContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#operTimesDiv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOperTimesDiv(@NotNull PajamaParser.OperTimesDivContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#ruleBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRuleBody(@NotNull PajamaParser.RuleBodyContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ExprFalse}
+	 * labeled alternative in {@link PajamaParser#constant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprFalse(@NotNull PajamaParser.ExprFalseContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattern}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattern(@NotNull PajamaParser.PatternContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattList(@NotNull PajamaParser.PattListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpr(@NotNull PajamaParser.ExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#key}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKey(@NotNull PajamaParser.KeyContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code DecExpr}
+	 * labeled alternative in {@link PajamaParser#arithSingle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDecExpr(@NotNull PajamaParser.DecExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PajamaParser#relOperator}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -206,36 +262,17 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprTrue(@NotNull PajamaParser.ExprTrueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#params}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParams(@NotNull PajamaParser.ParamsContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PajamaParser#pair}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitPair(@NotNull PajamaParser.PairContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#formal}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFormal(@NotNull PajamaParser.FormalContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PajamaParser#args}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArgs(@NotNull PajamaParser.ArgsContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code PatTrue}
-	 * labeled alternative in {@link PajamaParser#pattConstant}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPatTrue(@NotNull PajamaParser.PatTrueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PajamaParser#ruleStatement}.
 	 * @param ctx the parse tree
@@ -250,13 +287,6 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPatFalse(@NotNull PajamaParser.PatFalseContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code PatString}
-	 * labeled alternative in {@link PajamaParser#pattConstant}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPatString(@NotNull PajamaParser.PatStringContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code ParExpr}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.
 	 * @param ctx the parse tree
@@ -270,12 +300,6 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPObject(@NotNull PajamaParser.PObjectContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PajamaParser#arithOperation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArithOperation(@NotNull PajamaParser.ArithOperationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code FunCallExpr}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.
@@ -296,11 +320,11 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOperAddPlus(@NotNull PajamaParser.OperAddPlusContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#object}.
+	 * Visit a parse tree produced by {@link PajamaParser#pattListOrEmpty}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitObject(@NotNull PajamaParser.ObjectContext ctx);
+	T visitPattListOrEmpty(@NotNull PajamaParser.PattListOrEmptyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code idExpr}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.

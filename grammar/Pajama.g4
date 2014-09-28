@@ -14,7 +14,8 @@ caseRule          : 'case' pattern '->' expr  ;
 
 // PATTERN
 pattern  :   pattInit(pattRest)? 
-           | '(' pattern ')';
+           | '(' pattern ')'
+;
 pattInit :            ID  #PId
                     | pattArray  #PArray
 					| pattObject #PObject
@@ -23,13 +24,22 @@ pattInit :            ID  #PId
 pattRest :            '@' ID 
                     | 'when' expr
 					;
-pattArray         :  '[' pattList? ']';
+pattArray         :  '[' pattListOrEmpty ']';
 pattObject        :  '{' pattPair '}'
 ;
 
+pattListOrEmpty : pattEmpty | pattList
+;
+pattList : pattern (',' pattern)* ( '|' pattRestArray)?
+;
+pattEmpty :
+;
 
-pattList : pattern (',' pattern)*;
-pattPair : key ':' pattern;
+pattRestArray : pattArray | ID
+;
+
+pattPair : key ':' pattern
+;
 
 pattConstant       : NUMBER  #PatNum
                    | STRING  #PatString
@@ -54,7 +64,7 @@ relOperation :      arithOperation ( relOperator arithOperation)*
 relOperator :	('>' | '<' | '==' | '<=' | '>=' | '!=');
 			
 arithOperation : arithMonom (operAddPlus arithMonom)*;
-arithMonom     : arithSingle (op=('*' | '/') arithSingle)*;
+arithMonom     : arithSingle (operTimesDiv arithSingle)*;
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
                    | arithSingle '(' args? ')' 	#FunCallExpr
@@ -67,6 +77,8 @@ arithSingle    :     '-' arithOperation			#DecExpr
 idSingle : ID
 ;
 operAddPlus : op=('+' | '-')
+;
+operTimesDiv: op=('*' | '/')
 ;
 constant        :    NUMBER  #ExprNum 
                    | STRING  #ExprString 

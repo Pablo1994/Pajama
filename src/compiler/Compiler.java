@@ -47,7 +47,7 @@ class SymbolEntry {
 
 public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
-    List<JSAst> rules  = new ArrayList<>();
+    List<JSAst> rules = new ArrayList<>();
     Map<String, SymbolEntry> symbolTable;
     Stack<Integer> stack = new Stack<>();
     int offset = 0;
@@ -130,15 +130,41 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     }
 
     @Override
-    public JSAst visitPArray(PajamaParser.PArrayContext ctx) {
+    public JSAst visitExprString(PajamaParser.ExprStringContext ctx) {
+        return STRING(ctx.STRING().getText());
+    }
+
+    @Override
+    public JSAst visitPattArray(PajamaParser.PattArrayContext ctx) {
+        System.err.println("VisitPattArray");
+        return visit(ctx.pattListOrEmpty());
+    }
+
+    @Override
+    public JSAst visitPattListOrEmpty(PajamaParser.PattListOrEmptyContext ctx) {
+        System.err.println("VisitPattListOrEmpty");
+        if (ctx.pattList() == null) {
+            return visit(ctx.pattEmpty());
+        }
+        return visit(ctx.pattList());
+    }
+
+    @Override
+    public JSAst visitPattEmpty(PajamaParser.PattEmptyContext ctx) {
+        System.err.println("VisitPattEmpty");
+        return EMPTY_PREDICATE();
+    }
+
+    @Override
+    public JSAst visitPattList(PajamaParser.PattListContext ctx) {
+        System.err.println("VisitPattList");
+        int lastOffset = this.offset;
         if (this.offset > 0) {
             this.stack.push(this.offset);
         }
         this.offset = 0;
         List<JSAst> args = new ArrayList<JSAst>();
-        ctx.pattArray()
-                .pattList()
-                .pattern()
+        ctx.pattern()
                 .stream()
                 .forEach((p) -> {
                     JSAst vp = visit(p);
@@ -147,13 +173,50 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
                     }
                     this.offset++;
                 });
-        if (!stack.empty()) {
-            this.offset = stack.pop();
-        } else {
-            this.offset = 0;
-        }
+        int restOffset = this.offset;
+        if (!stack.empty()) this.offset = stack.pop();
+        else this.offset = lastOffset;
 
-        return FUNCTION(FORMALS(X), RET(APP(PATLIST, ARGS(ARRAY(args), X))));
+		JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), X));
+		JSAst predicateRestPart, predicateComplete;
+		if(ctx.pattRestArray()!=null({
+			predicateRestPart=visit(ctx.pattRestArray());
+			JSAccess a = SLICE(X, NUM(restOffset));
+			resetAccess(X,a);
+			predicateComplete= AND(predicateFirstPart,
+								   APP(predicateRestPart,a));
+		}
+		else predicateComplete=predicateFirstPart;
+		return FUNCTION(FORMALS(X), RET(predicateComplete));
+	}
+
+    @Override
+    public JSAst visitPArray(PajamaParser.PArrayContext ctx) {
+        System.err.println("visitPArray");
+        return visit(ctx.pattArray());
+        /*if (this.offset > 0) {
+         this.stack.push(this.offset);
+         }
+         this.offset = 0;
+         List<JSAst> args = new ArrayList<JSAst>();
+         ctx.pattArray()
+         .pattList()
+         .pattern()
+         .stream()
+         .forEach((p) -> {
+         JSAst vp = visit(p);
+         if (vp != null) {
+         args.add(vp);
+         }
+         this.offset++;
+         });
+         if (!stack.empty()) {
+         this.offset = stack.pop();
+         } else {
+         this.offset = 0;
+         }
+
+         return FUNCTION(FORMALS(X), RET(APP(PATLIST, ARGS(ARRAY(args), X))));*/
     }
 
     @Override
