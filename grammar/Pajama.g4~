@@ -20,13 +20,13 @@ pattInit :            ID  #PId
                     | pattArray  #PArray
 					| pattObject #PObject
 					| pattConstant  #PCte
-;		
+;
+pattID : ID
+;					
 pattRest :            '@' ID 
                     | 'when' expr
 ;
 pattArray         :  '[' pattListOrEmpty ']';
-pattID : ID
-;			
 pattObject        :  '{' pattPair '}'
 ;
 

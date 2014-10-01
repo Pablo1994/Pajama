@@ -182,8 +182,6 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         int restOffset = this.offset;
         if (!stack.empty()) this.offset = stack.pop();
         else this.offset = lastOffset;
-
-		//JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), X));
 		JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), SLICE(X,NUM(0),NUM(restOffset))));
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
@@ -206,6 +204,13 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     @Override
     public JSAst visitPId(PajamaParser.PIdContext ctx) {
         JSId id = ID(ctx.ID().getText());
+        locate(id);
+        return FUNCTION(FORMALS(X), RET(TRUE));
+    }
+
+	@Override
+	public JSAst visitPattId(PajamaParser.PattIdContext ctx) {
+		JSId id = ID(ctx.ID().getText());
         locate(id);
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
