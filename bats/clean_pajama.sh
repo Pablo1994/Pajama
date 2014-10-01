@@ -1,2 +1,2 @@
+rm  -rf src/antlr/grammar/*
 rm  -rf lib/* 
-rm  -rf src/antlr/*

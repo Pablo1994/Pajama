@@ -183,7 +183,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         if (!stack.empty()) this.offset = stack.pop();
         else this.offset = lastOffset;
 
-		JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), X));
+		//JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), X));
+		JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), SLICE(X,NUM(0),NUM(restOffset))));
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
 			predicateRestPart=visit(ctx.pattRestArray());

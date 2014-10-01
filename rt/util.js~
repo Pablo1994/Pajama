@@ -3,7 +3,7 @@ function patListTest(lp, n){
    var res = Array.isArray(n)
    && n.length == lp.length
    && lp.reduce(function(z, p) z && p(n), true);
-	print("Resultado: "+res);
+	print("Resultado: "res);
 	return res;
 }
 

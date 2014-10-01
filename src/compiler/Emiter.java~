@@ -44,7 +44,7 @@ public interface Emiter{
     default JSPoint POINT(JSNum x, JSAst y){return new JSPoint(x, y);}
 	default JSAnd AND(JSAst l, JSAst r){return new JSAnd(l,r);}
 	default JSAst TO_BE_DONE(String msg){return ID(msg+"()");}
-	//default JSAst FUNCALL(JSAst id, List<JSAst> args){return JSFuncall(id,args);}
+	default JSAst FUNCALL(JSAst id, List<JSAst> args){return JSFuncall(id,args);}
 	default JSAst EMPTY_PREDICATE(){
 		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY, X)));
 	}
