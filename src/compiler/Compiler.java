@@ -245,6 +245,14 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
                     int k = p.index;
                     return POINT(p.add(1).index, OPERATION(opers.get(k), p.y, m));
                 });
+				
+				/*Para entender mejor el algoritmo:
+		JSAst a = monoms.get(0);
+		for(int i=1;i<monoms.length;i++){
+			a = OPERATION(opers.get(k),a,monoms[i]);
+		}
+		return a;
+		*/
         return ((JSPoint) point).y;
     }
 
@@ -279,7 +287,13 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitFunCallExpr(PajamaParser.FunCallExprContext ctx) {
-        return TO_BE_DONE("FUNCALL_TO_BE_DONE");
+		JSAst nom = visit(ctx.arithSingle());
+		List<JSAst> listArgs = ctx.args().expr()
+                .stream()
+                .map((o) -> (JSAst) visit(o))
+                .collect(Collectors.toList());
+		return APP(nom,listArgs);
+        //return TO_BE_DONE("FUNCALL_TO_BE_DONE");
     }
 
     @Override

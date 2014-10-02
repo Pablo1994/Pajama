@@ -21,8 +21,8 @@ pattInit :            ID  #PId
 					| pattObject #PObject
 					| pattConstant  #PCte
 ;		
-pattRest :            '@' ID 
-                    | 'when' expr
+pattRest :            '@' ID #PRSave
+                    | 'when' expr #PRWhen
 ;
 pattArray         :  '[' pattListOrEmpty ']';
 pattID : ID

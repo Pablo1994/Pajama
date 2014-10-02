@@ -1,3 +1,0 @@
-rule foo9(a){
-  case [x|[1,2]] -> true
-}
