@@ -62,7 +62,7 @@ relMonom  : relOperation ('&&' relOperation)*;
 relOperation :      arithOperation ( relOperator arithOperation)*
                  | '!'  relOperation
 ;
-relOperator :	('>' | '<' | '==' | '<=' | '>=' | '!=');
+relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=');
 			
 arithOperation : arithMonom (operAddPlus arithMonom)*;
 arithMonom     : arithSingle (operTimesDiv arithSingle)*;

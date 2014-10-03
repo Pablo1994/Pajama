@@ -203,6 +203,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitPId(PajamaParser.PIdContext ctx) {
+		System.err.println("visitPId");
         JSId id = ID(ctx.ID().getText());
         locate(id);
         return FUNCTION(FORMALS(X), RET(TRUE));
@@ -210,6 +211,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
 	@Override
 	public JSAst visitPattID(PajamaParser.PattIDContext ctx) {
+		System.err.println("visitPattID");
 		JSId id = ID(ctx.ID().getText());
         locate(id);
         return FUNCTION(FORMALS(X), RET(TRUE));
@@ -218,6 +220,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitIdSingle(PajamaParser.IdSingleContext ctx) {
+		System.err.println("visitIdSingle");
         String value = ctx.ID().getText();
         JSId id = ID(value);
         SymbolEntry entry = symbolTable.get(value);
@@ -229,6 +232,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitArithOperation(PajamaParser.ArithOperationContext ctx) {
+		System.err.println("visitArithOperation");
         List<JSId> opers = ctx.operAddPlus()
                 .stream()
                 .map((o) -> (JSId) visit(o))
@@ -258,6 +262,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
 	@Override
 	public JSAst visitArithMonom(PajamaParser.ArithMonomContext ctx){
+		System.err.println("visitArithMonom");
 		List<JSId> opers = ctx.operTimesDiv()
                 .stream()
                 .map((o) -> (JSId) visit(o))
@@ -278,15 +283,18 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	}
     @Override
     public JSAst visitOperAddPlus(PajamaParser.OperAddPlusContext ctx) {
+	System.err.println("visitOperAddPlus");
         return ID(ctx.op.getText());
     }
 	@Override
     public JSAst visitOperTimesDiv(PajamaParser.OperTimesDivContext ctx) {
+		System.err.println("visitOperTimesDiv");
         return ID(ctx.op.getText());
     }
 
     @Override
     public JSAst visitFunCallExpr(PajamaParser.FunCallExprContext ctx) {
+		System.err.println("visitFunCallExpr");
 		JSAst nom = visit(ctx.arithSingle());
 		List<JSAst> listArgs = ctx.args().expr()
                 .stream()
@@ -295,9 +303,52 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		return APP(nom,listArgs);
         //return TO_BE_DONE("FUNCALL_TO_BE_DONE");
     }
+	
+	 @Override
+    public JSAst visitRelOperation(PajamaParser.RelOperationContext ctx) {
+	System.err.println("visitRelOperation");
+        List<JSId> opers = ctx.relOperator()
+                .stream()
+                .map((o) -> (JSId) visit(o))
+                .collect(Collectors.toList());
+        List<JSAst> ariths = ctx.arithOperation()
+                .stream()
+                .map((m) -> visit(m))
+                .collect(Collectors.toList());
+        JSAst a = ariths.get(0);
+        JSAst point = ariths.stream()
+                .skip(1)
+                .reduce(POINT(0, a), (z, m) -> {
+                    JSPoint p = (JSPoint) z;
+                    int k = p.index;
+                    return POINT(p.add(1).index, OPERATION(opers.get(k), p.y, m));
+                });
+				//OPERATION(OPERADOR><==,A<B<C,D)
+				/*Para entender mejor el algoritmo:
+				JSAst a = ariths.get(0);
+				for(int i=1;i<ariths.length;i++){
+					a = OPERATION(opers.get(k),a,ariths[i]);
+				}
+				return a;
+				*/
+				
+				
+				//return APP(FUNCTION(FORMALS(X),RET(((JSPoint) point).y)),X);//Algo asi debe ser.
+				return FUNCTION(FORMALS(X),RET(((JSPoint) point).y)); //El problema es que me esta tirando una function en vez de tirar 666 de una vez. o sea hay que hacer apply en algun lado.
+				//Falta hacer que sirva para 1<2<3 (1<2 && 2<3)
+       // return ((JSPoint) point).y;
+    }
+	
+	@Override
+    public JSAst visitRelOperator(PajamaParser.RelOperatorContext ctx) {
+		System.err.println("visitRelOperator");
+		return ID(ctx.op.getText());
+	}
+	
 
     @Override
     public JSAst visitExprNum(PajamaParser.ExprNumContext ctx) {
+		System.err.println("visitExprNum");
         return NUM(Integer.valueOf(ctx.NUMBER().getText()));
     }
 
