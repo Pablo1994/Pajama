@@ -300,8 +300,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
                 .stream()
                 .map((o) -> (JSAst) visit(o))
                 .collect(Collectors.toList());
+		if(listArgs.size()>1) return APP(nom,ARRAY(listArgs));
 		return APP(nom,listArgs);
-        //return TO_BE_DONE("FUNCALL_TO_BE_DONE");
     }
 	
 	 @Override

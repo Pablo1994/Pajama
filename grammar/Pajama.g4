@@ -43,6 +43,7 @@ pattPair : key ':' pattern
 ;
 
 pattConstant       : NUMBER  #PatNum
+				   | '_' 	 #PatAny
                    | STRING  #PatString
 				   | 'true'  #PatTrue
 				   | 'false' #PatFalse
@@ -68,13 +69,12 @@ arithOperation : arithMonom (operAddPlus arithMonom)*;
 arithMonom     : arithSingle (operTimesDiv arithSingle)*;
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
-                   | arithSingle '(' args? ')' 	#FunCallExpr
+                   | arithSingle '(' ( args )? ')' 	#FunCallExpr
 		           | arithSingle ('.' ID)+ 		#ObjectAccess
 				   | idSingle 					#idExpr
 				   | object						#ObjectExpr
 		           | constant 					#ConstantExpr
-		         
-				   ;
+;
 idSingle : ID
 ;
 operAddPlus : op=('+' | '-')
@@ -86,8 +86,9 @@ constant        :    NUMBER  #ExprNum
 				   | 'true'  #ExprTrue
 				   | 'false' #ExprFalse
 				   | 'null'  #ExprNull
-				   ;
-args   :  expr (',' expr)*;
+;
+args   :  expr (',' expr)*
+;
 
 // LEXER
 
