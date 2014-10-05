@@ -56,9 +56,9 @@ public interface Emiter{
 	}
     final JSBool TRUE = new JSBool(true);
     final JSBool FALSE = new JSBool(false);
-    final JSId X = new JSId("x");
-    final JSId N = new JSId("n");
-    final JSId C = new JSId("c");
+    final JSId X = new JSId("$x");
+    final JSId N = new JSId("$n");
+    final JSId C = new JSId("$c");
     final JSId FAIL = new JSId("fail");
 	final JSNum NULL_OFFSET = new JSNum(-1);
     final JSId PATLIST = new JSId("patListTest");
