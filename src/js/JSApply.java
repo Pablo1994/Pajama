@@ -20,7 +20,8 @@ public class JSApply implements JSAst{
 	  f.genCode(out);
 	  out.print(")");
 	  out.print("(");
-	  genCode(out, args);
+	  genCode(out, args);//Creo que este es el problema
 	  out.print(")");
+	  //(nomFuncion)(arg1,arg2,arg3)
    }
 }

@@ -123,7 +123,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         this.offset = -1;
 
         JSAst p = visit(ctx.pattern());
-        JSAst e = visit(ctx.expr());
+        JSAst e = APP(visit(ctx.expr()),N);
         // function(n, c)if(p(n)) return e; else return c(n);
         return FUNCTION(FORMALS(N, C),
                 IF(APP(p, N), RET(e), RET(APP(C, N))));
@@ -296,11 +296,23 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitFunCallExpr(PajamaParser.FunCallExprContext ctx) {
 		System.err.println("visitFunCallExpr");
 		JSAst nom = visit(ctx.arithSingle());
-		List<JSAst> listArgs = ctx.args().expr()
+		if(ctx.expr()==null){
+			System.err.println("THE FUNCTION HAS NO ARGUMENTS");
+			//System.err.println(nom.getText());
+		}
+		else{
+			//System.err.println(ctx.args().expr().size());
+		}
+		/*List<JSAst> listArgs = ctx.args().expr()
                 .stream()
                 .map((o) -> (JSAst) visit(o))
-                .collect(Collectors.toList());
-		return APP(nom,listArgs);
+                .collect(Collectors.toList());*/
+		//JSAst arg = visit();
+		List<JSAst> listArgs = new ArrayList<JSAst>();
+		listArgs.add(APP(visit(ctx.expr()),N));
+		//listArgs.add(APP(X,visit(ctx.expr())));
+		return FUNCALL(nom,listArgs);
+		//return null;
         //return TO_BE_DONE("FUNCALL_TO_BE_DONE");
     }
 	

@@ -68,12 +68,11 @@ arithOperation : arithMonom (operAddPlus arithMonom)*;
 arithMonom     : arithSingle (operTimesDiv arithSingle)*;
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
-                   | arithSingle '(' args? ')' 	#FunCallExpr
+                   | arithSingle '(' expr? ')' 	#FunCallExpr
 		           | arithSingle ('.' ID)+ 		#ObjectAccess
 				   | idSingle 					#idExpr
 				   | object						#ObjectExpr
-		           | constant 					#ConstantExpr
-		         
+		           | constant 					#ConstantExpr		         
 				   ;
 idSingle : ID
 ;
