@@ -1,0 +1,1 @@
+gedit cases/$1

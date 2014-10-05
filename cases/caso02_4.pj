@@ -1,0 +1,4 @@
+rule largoRC(a){
+    case [[], c] -> c
+	| case [[_|r], c] -> larRC([r, c+1])
+}

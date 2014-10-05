@@ -296,24 +296,21 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitFunCallExpr(PajamaParser.FunCallExprContext ctx) {
 		System.err.println("visitFunCallExpr");
 		JSAst nom = visit(ctx.arithSingle());
-		if(ctx.expr()==null){
-			System.err.println("THE FUNCTION HAS NO ARGUMENTS");
-			//System.err.println(nom.getText());
+		List<JSAst> listArgs;
+		if(ctx.params() != null) {
+			listArgs = ctx.params().args().expr()
+		            .stream()
+		            .map((o) -> (JSAst) visit(o))
+		            .collect(Collectors.toList());
 		}
-		else{
-			//System.err.println(ctx.args().expr().size());
+		else {
+			listArgs = ctx.args().expr()
+		            .stream()
+		            .map((o) -> (JSAst) visit(o))
+		            .collect(Collectors.toList());	
 		}
-		/*List<JSAst> listArgs = ctx.args().expr()
-                .stream()
-                .map((o) -> (JSAst) visit(o))
-                .collect(Collectors.toList());*/
-		//JSAst arg = visit();
-		List<JSAst> listArgs = new ArrayList<JSAst>();
-		listArgs.add(APP(visit(ctx.expr()),N));
-		//listArgs.add(APP(X,visit(ctx.expr())));
-		return FUNCALL(nom,listArgs);
-		//return null;
-        //return TO_BE_DONE("FUNCALL_TO_BE_DONE");
+		if(listArgs.size()>1) return APP(nom,ARRAY(listArgs));
+		return APP(nom,listArgs);
     }
 	
 	 @Override

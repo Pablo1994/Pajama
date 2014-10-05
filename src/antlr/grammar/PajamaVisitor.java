@@ -122,12 +122,6 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprNull(@NotNull PajamaParser.ExprNullContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PajamaParser#pattRest}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPattRest(@NotNull PajamaParser.PattRestContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PajamaParser#pattID}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -172,6 +166,13 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFormal(@NotNull PajamaParser.FormalContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PRSave}
+	 * labeled alternative in {@link PajamaParser#pattRest}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPRSave(@NotNull PajamaParser.PRSaveContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code PatTrue}
 	 * labeled alternative in {@link PajamaParser#pattConstant}.
@@ -268,6 +269,13 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprTrue(@NotNull PajamaParser.ExprTrueContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code PRWhen}
+	 * labeled alternative in {@link PajamaParser#pattRest}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPRWhen(@NotNull PajamaParser.PRWhenContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PajamaParser#pair}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -319,6 +327,13 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPattArray(@NotNull PajamaParser.PattArrayContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code PatAny}
+	 * labeled alternative in {@link PajamaParser#pattConstant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPatAny(@NotNull PajamaParser.PatAnyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PajamaParser#operAddPlus}.
 	 * @param ctx the parse tree
