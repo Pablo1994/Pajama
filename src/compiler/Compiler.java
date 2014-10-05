@@ -296,10 +296,19 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitFunCallExpr(PajamaParser.FunCallExprContext ctx) {
 		System.err.println("visitFunCallExpr");
 		JSAst nom = visit(ctx.arithSingle());
-		List<JSAst> listArgs = ctx.args().expr()
-                .stream()
-                .map((o) -> (JSAst) visit(o))
-                .collect(Collectors.toList());
+		List<JSAst> listArgs;
+		if(ctx.params() != null) {
+			listArgs = ctx.params().args().expr()
+		            .stream()
+		            .map((o) -> (JSAst) visit(o))
+		            .collect(Collectors.toList());
+		}
+		else {
+			listArgs = ctx.args().expr()
+		            .stream()
+		            .map((o) -> (JSAst) visit(o))
+		            .collect(Collectors.toList());	
+		}
 		if(listArgs.size()>1) return APP(nom,ARRAY(listArgs));
 		return APP(nom,listArgs);
     }
