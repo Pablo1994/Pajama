@@ -306,7 +306,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		else {
 			listArgs = ctx.args().expr()
 		            .stream()
-		            .map((o) -> (JSAst) visit(o))
+		            .map((o) -> (JSAst) APP(visit(o),X))
 		            .collect(Collectors.toList());	
 		}
 		if(listArgs.size()>1) return APP(nom,ARRAY(listArgs));
