@@ -163,10 +163,10 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitPattList(PajamaParser.PattListContext ctx) {
-        System.err.println("VisitPattList");
+        System.err.println("VisitPattList con offset "+Integer.toString(this.offset));
         int lastOffset = this.offset;
         if (this.offset > 0) {
-            this.stack.push(this.offset);
+            this.stack.push(this.offset);//0
         }
         this.offset = 0;
         List<JSAst> args = new ArrayList<JSAst>();
@@ -179,16 +179,31 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
                     }
                     this.offset++;
                 });
-        int restOffset = this.offset;
-        if (!stack.empty()) this.offset = stack.pop();
+        int restOffset = this.offset;//1
+        if (!stack.empty()) this.offset = stack.pop();//0
         else this.offset = lastOffset;
-		JSAst predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), SLICE(X,NUM(0),NUM(restOffset))));
+		JSAst predicateFirstPart;
+		if(offset!=-1){
+			predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args),SLICE(ACCESS(X,NUM(offset)),NUM(0),NUM(restOffset))));
+		}
+		predicateFirstPart = APP(PATLIST, ARGS(ARRAY(args), SLICE(X,NUM(0),NUM(restOffset))));
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
 			predicateRestPart=visit(ctx.pattRestArray());
-			System.err.println("		pattRestArray: "+ctx.pattRestArray().pattID().getText());
-			JSAccess a = SLICE(X, NUM(restOffset));
-			resetAccess(ID(ctx.pattRestArray().pattID().getText()),a);
+			//Bateando
+			JSAccess a=null;
+			if(ctx.pattRestArray().pattArray()!=null&&offset!=-1){
+					System.err.println("pattrestArray con offset "+Integer.toString(offset)+"Accesando a un array");
+					a = SLICE(ACCESS(X,NUM(offset)), NUM(restOffset));		
+			}
+			else
+				a = SLICE(X, NUM(restOffset));
+			//---
+			//System.err.println("pattRestArray: "+ctx.pattRestArray().pattID().getText());
+			//JSAccess a = SLICE(X, NUM(restOffset));
+			if(ctx.pattRestArray().pattID()!=null){
+				resetAccess(ID(ctx.pattRestArray().pattID().getText()),a);
+			}
 			predicateComplete= AND(predicateFirstPart,
 								   APP(predicateRestPart,a));
 		}
@@ -236,7 +251,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitIdSingle(PajamaParser.IdSingleContext ctx) {
 		System.err.println("visitIdSingle");
         String value = ctx.ID().getText();
-		System.err.println(value);
+		System.err.println("--idvalue="+value);
         JSId id = ID(value);
         SymbolEntry entry = symbolTable.get(value);
         if (entry != null) {
@@ -312,7 +327,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitFunCallExpr(PajamaParser.FunCallExprContext ctx) {
 		System.err.println("visitFunCallExpr");
 		JSAst nom = visit(ctx.arithSingle());
-		JSID nomFunc = ctx.arithSingle().idSingle().getText();
+		//JSID nomFunc = ctx.arithSingle().idSingle().getText();
 		List<JSAst> listArgs;
 		if(ctx.params() != null) {
 			listArgs = ctx.params().args().expr()
