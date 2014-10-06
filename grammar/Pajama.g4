@@ -25,7 +25,8 @@ pattInit :            ID  #PId
 pattRest :            '@' ID #PRSave
                     | 'when' expr #PRWhen
 ;
-pattArray         :  '[' pattListOrEmpty ']';
+pattArray         :  '[' pattListOrEmpty ']'
+;
 pattID : ID
 ;	
 pattAny : '_'
