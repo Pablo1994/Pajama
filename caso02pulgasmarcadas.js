@@ -109,7 +109,7 @@ function largoRC(a) {
                                 return true;
                             }], $x.slice(0, 1)) && (function($x) {
                                 return true;
-                            })($x.slice(1)); //debería ser x[0].slice()
+                            })($x.slice(1)); //debería ser x[0].slice(1)
                         }, function($x) {
                             return true;
                         }], $x.slice(0, 2));

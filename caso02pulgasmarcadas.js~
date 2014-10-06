@@ -22,11 +22,11 @@ function factorialCola(a) {
                             return true;
                         }], $x.slice(0, 2));
                     })($n)) return (function($x) {
-                    return (factorialCola)([(function($x) {
+                    return (factorialCola)([function($x) {
                         return ($x[0] - 1);
-                    })($x), (function($x) {
+                    }, function($x) {
                         return ($x[0] * $x[1]);
-                    })($x)]);
+                    }]);
                 })($n);
                 else return ($c)($n);
             })($x, fail);
@@ -38,13 +38,13 @@ function factorial(n) {
     return (function($x) {
         return (function($n, $c) {
             if ((function($x) {
-                    return (n >= 0);
+                    return (n >= 0); // n debería ser $x
                 })($n)) return (function($x) {
-                return (factorialCola)([(function($x) {
-                    return n;
-                })($x), (function($x) {
+                return (factorialCola)([function($x) {
+                    return n; // debería ser $x
+                }, function($x) {
                     return 1;
-                })($x)]);
+                }]);
             })($n);
             else return ($c)($n);
         })($x, function($x) {
@@ -79,7 +79,7 @@ function largo(a) {
                         })($x.slice(1));
                     })($n)) return (function($x) {
                     return ((largo)((function($x) {
-                        return $x.slice(1);
+                        return r; // Este r debería ser $x.slice(1)
                     })($x)) + 1);
                 })($n);
                 else return ($c)($n);
@@ -109,16 +109,16 @@ function largoRC(a) {
                                 return true;
                             }], $x.slice(0, 1)) && (function($x) {
                                 return true;
-                            })($x.slice(1));
+                            })($x.slice(1)); //debería ser x[0].slice()
                         }, function($x) {
                             return true;
                         }], $x.slice(0, 2));
                     })($n)) return (function($x) {
-                    return (largoRC)([(function($x) {
-                        return $x.slice(1);
-                    })($x), (function($x) {
-                        return ($x[1] + 1);
-                    })($x)]);
+                    return (largoRC)([function($x) {
+                        return $x[0]; // PULGA: Debería ser $x[0].slice(1), o bien, $x[1]
+                    }, function($x) {
+                        return ($x[1] + 1); // Si el anterior es $x[1] este debería ser $x[2]
+                    }]);
                 })($n);
                 else return ($c)($n);
             })($x, fail);
@@ -132,11 +132,11 @@ function largo2(a) {
             if ((function($x) {
                     return true;
                 })($n)) return (function($x) {
-                return (largoRC)([(function($x) {
+                return (largoRC)([function($x) {
                     return a;
-                })($x), (function($x) {
+                }, function($x) {
                     return 0;
-                })($x)]);
+                }]);
             })($n);
             else return ($c)($n);
         })($x, fail);

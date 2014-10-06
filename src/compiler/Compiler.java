@@ -186,8 +186,9 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
 			predicateRestPart=visit(ctx.pattRestArray());
+			System.err.println("		pattRestArray: "+ctx.pattRestArray().pattID().getText());
 			JSAccess a = SLICE(X, NUM(restOffset));
-			resetAccess(X,a);
+			resetAccess(ID(ctx.pattRestArray().pattID().getText()),a);
 			predicateComplete= AND(predicateFirstPart,
 								   APP(predicateRestPart,a));
 		}
@@ -205,7 +206,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitPId(PajamaParser.PIdContext ctx) {
 		System.err.println("visitPId");
         JSId id = ID(ctx.ID().getText());
-        locate(id);
+		locate(id);
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
 
@@ -213,6 +214,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	public JSAst visitPattID(PajamaParser.PattIDContext ctx) {
 		System.err.println("visitPattID");
 		JSId id = ID(ctx.ID().getText());
+		System.err.println("Visita ID: "+ctx.ID().getText());
         locate(id);
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
@@ -234,9 +236,11 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitIdSingle(PajamaParser.IdSingleContext ctx) {
 		System.err.println("visitIdSingle");
         String value = ctx.ID().getText();
+		System.err.println(value);
         JSId id = ID(value);
         SymbolEntry entry = symbolTable.get(value);
         if (entry != null) {
+			System.err.println("entró aquí");
             return entry.getAccess().setId(X);
         }
         return id;
@@ -312,7 +316,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		if(ctx.params() != null) {
 			listArgs = ctx.params().args().expr()
 		            .stream()
-		            .map((o) -> (JSAst) visit(o))
+		            .map((o) -> (JSAst) APP(visit(o),X))
 		            .collect(Collectors.toList());
 		}
 		else {
@@ -320,6 +324,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		            .stream()
 		            .map((o) -> (JSAst) APP(visit(o),X))
 		            .collect(Collectors.toList());	
+					System.err.println("Visit R!!");
 		}
 		if(listArgs.size()>1) return APP(nom,ARRAY(listArgs));
 		return APP(nom,listArgs);
