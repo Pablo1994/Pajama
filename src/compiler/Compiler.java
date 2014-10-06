@@ -216,6 +216,18 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         locate(id);
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
+
+	@Override
+    public JSAst visitPAny(PajamaParser.PAnyContext ctx) {
+		System.err.println("visitPAny");
+        return FUNCTION(FORMALS(X), RET(TRUE));
+    }
+
+	@Override
+	public JSAst visitPattAny(PajamaParser.PattAnyContext ctx) {
+		System.err.println("visitPattAny");
+        return FUNCTION(FORMALS(X), RET(TRUE));
+    }
     //------------------------------------------------------------
 
     @Override
