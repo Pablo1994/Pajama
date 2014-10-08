@@ -25,7 +25,7 @@ class SymbolEntry {
     JSAccess s;
     JSNum offset;
 
-    public SymbolEntry(JSId x, JSNum offset, JSAccess s) {
+    public SymbolEntry(JSId x, JSNum offset, JSAccess s) { //Aquí se debe cambiar la clase JSAccess por una clase abstracta encima de las dos(JSAccess,   JSOAccess)
         this.x = x;
         this.s = s;
         this.offset = offset;
@@ -53,7 +53,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     Stack<Integer> stack = new Stack<>();
     int offset = 0;
 
-    public JSAst locate(JSId x) {
+    public JSAst locate(JSId x) { //En este decidí usar una bandera con el valor de offset, en vez de un símbolo, sumarle 100  cada vez que sea un slice.
         if (this.offset < 0) {
             return x;
         }
@@ -65,10 +65,13 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         JSAst a = x;
         JSNum off = NUM(this.offset);
         for (JSAst k : rstack) {
-            a = ACCESS(a, k);
+			int v = ((JSNum) k).getValue();
+			if(v > 100) a = SLICE(a,NUM(v - 100)); //importante restar los 100
+			else	a = ACCESS(a, k);
         }
-        a = ACCESS(a, off);
-        SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
+		if(this.offset > 100) a = SLICE(a,NUM(offset - 100));
+        else a = ACCESS(a, off);
+        SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a); //Acá tambien hay que cambiar JSAccess por una clase madre.
         symbolTable.put(x.getValue(), e);
         return a;
     }
