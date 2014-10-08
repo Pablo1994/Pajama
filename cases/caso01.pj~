@@ -5,4 +5,4 @@ rule caso1(n){
 }
 expectEQ("caso1(0)", "false");
 expectEQ("caso1(1)", "true");
-expectFAIL("caso1(2)");
+expectFAIL("caso(2)");

@@ -48,6 +48,7 @@ class SymbolEntry {
 public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     List<JSAst> rules = new ArrayList<>();
+	List<JSAst> tests = new ArrayList<>();
     Map<String, SymbolEntry> symbolTable;
     Stack<Integer> stack = new Stack<>();
     int offset = 0;
@@ -82,6 +83,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public void genCode() {
         LOAD(PATH).genCode();
         rules.stream().forEach((t) -> t.genCode());
+		tests.stream().forEach((s) -> s.genCode());
     }
 
     public JSAst compile(ParseTree tree) {
@@ -97,6 +99,19 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         rules.add(frule);
         return frule;
     }
+
+	@Override
+	public JSAst visitTestStatement (PajamaParser.TestStatementContext ctx){
+		System.err.println("visitTestStatement");
+		JSId id = ID(ctx.ID().getText());
+		List<JSAst> listArgs = ctx.args().expr()
+		            .stream()
+		            .map((o) -> visit(o))
+		            .collect(Collectors.toList());	
+		JSAst ftest = APP(id,listArgs, true);
+		tests.add(ftest);
+		return ftest;
+	}
 
     @Override
     public JSAst visitFormal(PajamaParser.FormalContext ctx) {
@@ -137,6 +152,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitExprString(PajamaParser.ExprStringContext ctx) {
+		System.err.println("visitExprString");
         return STRING(ctx.STRING().getText());
     }
 
@@ -376,7 +392,9 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 				
 				
 				//return APP(FUNCTION(FORMALS(X),RET(((JSPoint) point).y)),X);//Algo asi debe ser.
-				return FUNCTION(FORMALS(X),RET(((JSPoint) point).y)); //El problema es que me esta tirando una function en vez de tirar 666 de una vez. o sea hay que hacer apply en algun lado.
+			if(((JSPoint)point).y.getClass().getName()=="pajama.js.JSString") return ((JSPoint) point).y; //Pienso que esto nos podría servir para resolver el problema del when, no es lo mas elegante, pero al menos así podemos distinguir de cuando hay que devolver una funcion a cuando hay que devolver una variable sola.
+		return FUNCTION(FORMALS(X),RET(((JSPoint) point).y)); 
+			//return point;//El problema es que me esta tirando una function en vez de tirar 666 de una vez. o sea hay que hacer apply en algun lado.
 				//Falta hacer que sirva para 1<2<3 (1<2 && 2<3)
        // return ((JSPoint) point).y;
     }

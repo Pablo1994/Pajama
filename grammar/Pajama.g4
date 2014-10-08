@@ -1,10 +1,14 @@
 grammar Pajama;
 // loriacarlos@gmail.com EIF400 II-2014
 // START
-rules : ruleStatement+ ;
+rules : ruleStatement+ testStatement*
+;
 
 // RULE
 ruleStatement : 'rule' ID formal '{' ruleBody  '}'
+;
+
+testStatement : ID '(' args? ')' ';'
 ;
 
 formal            : '(' ID ')'

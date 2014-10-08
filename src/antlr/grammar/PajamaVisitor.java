@@ -262,6 +262,12 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitKey(@NotNull PajamaParser.KeyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PajamaParser#testStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTestStatement(@NotNull PajamaParser.TestStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code DecExpr}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.
 	 * @param ctx the parse tree

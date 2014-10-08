@@ -27,6 +27,12 @@ public interface Emiter{
     default JSApply APP(JSAst f, List<JSAst> args){
         return new JSApply(f, args);
     }
+	default JSApply APP(JSAst c, JSAst e, boolean b){
+        return new JSApply(c, e, b);
+    }
+    default JSApply APP(JSAst f, List<JSAst> args, boolean b){
+        return new JSApply(f, args, b);
+    }
     default List<JSAst> ARGS(JSAst... args){ return Arrays.asList(args);}
     default List<JSAst> FORMALS(JSAst... args){ return Arrays.asList(args);}
     default JSAst EQ(JSAst a, JSAst b){
