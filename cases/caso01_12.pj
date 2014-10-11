@@ -5,8 +5,8 @@ rule foo9(a){
   case [x|[]] -> true
 }
 rule foo10(a){
-  case [1|x] -> x
+  case [1|v] -> v
 }
 rule foo11(a){
-  case [1, x when x>0]  -> x+1
+  case [1, v when v>0&&v<5]  -> v+1
 }

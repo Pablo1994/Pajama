@@ -32,7 +32,9 @@ pattRest :            '@' ID #PRSave
 pattArray         :  '[' pattListOrEmpty ']'
 ;
 pattID : ID
-;	
+;
+pattRestID : ID
+;
 pattAny : '_'
 ;		
 pattObject        :  '{' pattPair '}'
@@ -44,7 +46,7 @@ pattList : pattern (',' pattern)* ( '|' pattRestArray)?
 ;
 pattEmpty :
 ;
-pattRestArray : pattArray | pattID | pattAny
+pattRestArray : pattArray | pattRestID | pattAny
 ;
 
 pattPair : key ':' pattern
@@ -71,7 +73,7 @@ relMonom  : relOperation ('&&' relOperation)*;
 relOperation :      arithOperation ( relOperator arithOperation)*
                  | '!'  relOperation
 ;
-relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=');
+relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=' | '&&' | '||');
 			
 arithOperation : arithMonom (operAddPlus arithMonom)*;
 arithMonom     : arithSingle (operTimesDiv arithSingle)*;

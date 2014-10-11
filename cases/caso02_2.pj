@@ -1,4 +1,4 @@
 rule factorial(n){
-      case n when n>=0 -> factorialCola([n, 1])
-	| case n -> 0
+      case k when k>=0 -> factorialCola([k, 1])
+	| case k -> 0
 }

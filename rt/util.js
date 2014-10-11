@@ -14,6 +14,7 @@ var FAIL = new java.lang.Exception("Pattern matching failed");
 function fail(){
    throw FAIL;
 }
+function any(x)true;
 
  function expectEQ(expr, r){
      if (eval(expr).toString()===r) return true;
@@ -35,3 +36,5 @@ function fail(){
 	}
 	return false;
  }
+
+function identidad(x)x;

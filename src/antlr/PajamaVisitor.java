@@ -122,11 +122,23 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprNull(@NotNull PajamaParser.ExprNullContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattRestID}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattRestID(@NotNull PajamaParser.PattRestIDContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PajamaParser#pattID}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitPattID(@NotNull PajamaParser.PattIDContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattAny}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattAny(@NotNull PajamaParser.PattAnyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code PArray}
 	 * labeled alternative in {@link PajamaParser#pattInit}.
@@ -237,6 +249,13 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPattList(@NotNull PajamaParser.PattListContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code PAny}
+	 * labeled alternative in {@link PajamaParser#pattInit}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPAny(@NotNull PajamaParser.PAnyContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PajamaParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -248,6 +267,12 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitKey(@NotNull PajamaParser.KeyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#testStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTestStatement(@NotNull PajamaParser.TestStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code DecExpr}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.
