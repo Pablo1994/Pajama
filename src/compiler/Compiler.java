@@ -61,12 +61,29 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	public JSAst locatePatternID(JSId x){//revisa que sea toplevel y le pone el acceso.
 		System.err.println("locatePatternID: "+x.getValue()+" "+stack+" "+this.offset);
 		if(this.offset<0){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
+			//locateOnTopLevel();
+			setOnTopLevel(x);
 			return locateOnTopLevel();
 		}
 		locate(x);
 		JSNum off = NUM(this.offset);
 		JSAccess a = ACCESS(x,off);
 		return a;//$x[offset]
+	}
+	
+	public JSAst locateExprID(JSId x){
+		System.err.println("locateExprID: "+x.getValue());
+		SymbolEntry entry = symbolTable.get(x.getValue());
+        if (entry != null) {
+			//if((JSId)(entry.getAccess().left).getValue().equals(this.ruleName.getValue()))
+			System.err.println("--NON NULL ENTRY");
+			if(entry.getAccess().equals(TOP_ACCESS))
+				return entry.getAccess();
+            return entry.getAccess().setId(X);
+        }
+		System.err.println("NULL ENTRY RETURNING ID");
+        return x;
+		
 	}
 	
     public JSAst locate(JSId x) {//para todos los mortales.
@@ -95,8 +112,9 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return a;
     }
 	
+	
 	public JSAst setOnTopLevel(JSId x){
-		System.err.println("setOnTopLevel: "+this.ruleName);
+		System.err.println("setOnTopLevel: "+this.ruleName.getValue());
 		JSAccess a = TOP();
 		SymbolEntry e = new SymbolEntry(x,NULL_OFFSET,a);
 		symbolTable.put(x.getValue(),e);
@@ -104,13 +122,14 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	}
 	
 	public JSAst locateOnTopLevel(){
-		System.err.println("locateOnTopLevel: "+this.ruleName);
+		System.err.println("locateOnTopLevel: "+this.ruleName.getValue());
 		SymbolEntry e = symbolTable.get(this.ruleName.getValue());
 		if(e!=null)return e.getAccess();
 		return setOnTopLevel(this.ruleName);
 	}
 
 	public SymbolEntry resetAccess(JSId x, JSAccess a){
+		System.err.println("resetAccess: "+x.getValue());
 		SymbolEntry e = new SymbolEntry(x, NULL_OFFSET, a);
 		symbolTable.put(x.getValue(), e);
 		return e;
@@ -124,11 +143,13 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     }
 
     public JSAst compile(ParseTree tree) {
+		System.err.println("******COMPILING*******");
         return visit(tree);
     }
 
     @Override
     public JSAst visitRuleStatement(PajamaParser.RuleStatementContext ctx) {
+		System.err.println("visitRuleStatement");
         JSId id = ID(ctx.ID().getText());
 		ruleName = id;
         JSAst formal = visit(ctx.formal());
@@ -153,11 +174,13 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitFormal(PajamaParser.FormalContext ctx) {
+		System.err.println("visitFormal "+ctx.ID().getText());
         return ID(ctx.ID().getText());
     }
 
     @Override
     public JSAst visitRuleBody(PajamaParser.RuleBodyContext ctx) {
+		System.err.println("visitRuleBody ");
         List<JSAst> fcases = ctx.caseRule().stream()
                 .map((c) -> visit(c))
                 .collect(Collectors.toList());
@@ -171,6 +194,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override 
     public JSAst visitCaseRule(PajamaParser.CaseRuleContext ctx) {
+		System.err.println("---------START CASE RULE-----------");
+		System.err.println("visitCaseRule");
         symbolTable = new Hashtable<String, SymbolEntry>();
         stack = new Stack<JSAst>();
         this.offset = -1;
@@ -178,12 +203,14 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         JSAst p = visit(ctx.pattern());
         JSAst e = APP(visit(ctx.expr()),N);
         // function(n, c)if(p(n)) return e; else return c(n);
+		System.err.println("---------FINISH CASE RULE-----------");
         return FUNCTION(FORMALS(N, C),
                 IF(APP(p, N), RET(e), RET(APP(C, N))));
     }
 
     @Override
     public JSAst visitPatNum(PajamaParser.PatNumContext ctx) {
+		System.err.println("visitPatNum"+ctx.NUMBER().getText());
         JSAst n = NUM(Integer.valueOf(ctx.NUMBER().getText()));
         return FUNCTION(FORMALS(X), RET(EQ(locatePatternID(X), n))); //function(x)x===n;
     }
@@ -240,7 +267,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			}
 		else
 			this.offset = lastOffset;
-
+		System.err.println("--VisitPattList: creating predFirstPart");
 		JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
 		/*Este locate en la primera parte del predicado se
 		encarga de hacer todo el desmadre de los accesos, con el nuevo stack, etc.	
@@ -251,9 +278,10 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			this.push(slice);
 			lastOffset = this.offset;
 			this.offset = 0;
+			System.err.println("--VisitPattList: creating predicateRestPart");
 			predicateRestPart=visit(ctx.pattRestArray());//esta visita va a ser relativa a la pila (comienza en 0 de nuevo)
 			this.offset = lastOffset;
-			this.stack.pop();//le quito uno al stack no se por que.
+			this.stack.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
 			
 			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,X));
 			
@@ -279,7 +307,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return ANY;
     }
 
-	/*@Override
+	/*pre 10 oct, es lo mismo que PID@Override
 	public JSAst visitPattID(PajamaParser.PattIDContext ctx) {
 		System.err.println("visitPattID");
 		JSId id = ID(ctx.ID().getText());
@@ -313,16 +341,18 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitIdSingle(PajamaParser.IdSingleContext ctx) {
-		System.err.println("visitIdSingle");
+		System.err.println("visitIdSingle "+ctx.ID().getText());
         String value = ctx.ID().getText();
 		System.err.println("--idvalue="+value);
         JSId id = ID(value);
+		/*
         SymbolEntry entry = symbolTable.get(value);
         if (entry != null) {
 			System.err.println("entró aquí");
             return entry.getAccess().setId(X);
         }
-        return id;
+        return id;*/
+		return locateExprID(id);
     }
 
     @Override

@@ -15,7 +15,7 @@ public class JSAccess implements  JSAst{
 	      last = ((JSAccess)x);
      	  x = last.getLeft();
 	  }
-	  last.setLeft(id);//a[b[]] ||a[][]
+	  last.setLeft(id);
 	  return this;
    }
    public JSAccess(JSAst left, JSAst right){

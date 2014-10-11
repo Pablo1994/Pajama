@@ -36,3 +36,5 @@ function any(x)true;
 	}
 	return false;
  }
+
+function identidad(x)x;
