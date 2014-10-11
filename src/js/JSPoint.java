@@ -21,10 +21,10 @@ public class JSPoint implements JSAst{
    }
    @Override
    public void genCode(PrintStream out){
-      out.print("(");
+      /*out.print("(");
 	  x.genCode(out);
-	  out.print(",");
+	  out.print(",");*/
 	  y.genCode(out);
-	  out.print(")");
+	  //out.print(")");
    }
 }

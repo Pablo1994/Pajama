@@ -1,3 +1,5 @@
 rule foo2(a){
-	case [_] -> true
+	case [[z|2],[y|5]|5] -> true
 } 
+//z = x[0].slice(0,1)
+//z = x.slice(0,2)[0].slice(0,1)

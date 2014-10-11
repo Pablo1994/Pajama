@@ -1,10 +1,14 @@
 grammar Pajama;
 // loriacarlos@gmail.com EIF400 II-2014
 // START
-rules : ruleStatement+ ;
+rules : ruleStatement+ testStatement*
+;
 
 // RULE
 ruleStatement : 'rule' ID formal '{' ruleBody  '}'
+;
+
+testStatement : ID '(' args? ')' ';'
 ;
 
 formal            : '(' ID ')'
@@ -28,7 +32,9 @@ pattRest :            '@' ID #PRSave
 pattArray         :  '[' pattListOrEmpty ']'
 ;
 pattID : ID
-;	
+;
+pattRestID : ID
+;
 pattAny : '_'
 ;		
 pattObject        :  '{' pattPair '}'
@@ -40,7 +46,7 @@ pattList : pattern (',' pattern)* ( '|' pattRestArray)?
 ;
 pattEmpty :
 ;
-pattRestArray : pattArray | pattID | pattAny
+pattRestArray : pattArray | pattRestID | pattAny
 ;
 
 pattPair : key ':' pattern
@@ -67,7 +73,7 @@ relMonom  : relOperation ('&&' relOperation)*;
 relOperation :      arithOperation ( relOperator arithOperation)*
                  | '!'  relOperation
 ;
-relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=');
+relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=' | '&&' | '||');
 			
 arithOperation : arithMonom (operAddPlus arithMonom)*;
 arithMonom     : arithSingle (operTimesDiv arithSingle)*;

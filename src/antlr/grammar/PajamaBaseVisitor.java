@@ -291,6 +291,13 @@ public class PajamaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitTestStatement(@NotNull PajamaParser.TestStatementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitDecExpr(@NotNull PajamaParser.DecExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

@@ -9,10 +9,12 @@ function patListTest(lp, n){
 
 function patListTestEmpty(x)
 	Array.isArray(x) && x.length==0;
+
 var FAIL = new java.lang.Exception("Pattern matching failed");
 function fail(){
    throw FAIL;
 }
+function any(x)true;
 
  function expectEQ(expr, r){
      if (eval(expr).toString()===r) return true;
@@ -27,7 +29,6 @@ function fail(){
 		  throw new java.lang.Exception("expecting to FAIL but it did not: "+ expr);
 		}
 	   else throw new java.lang.Exception("expectFAIL: invalid type"+expr);
-		
 	}
 	catch(e){
 	   if (e===f) return true;
