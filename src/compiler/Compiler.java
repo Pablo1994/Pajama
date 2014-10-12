@@ -101,12 +101,17 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		
         for (JSAst k : rstack) {
 			if(k instanceof JSAccess){//Esta encadenando los access?
+				System.err.println("SI ERA JSACCESS");
 				JSAccess na = (JSAccess)k;
 				a = na.setLeft(a);//si era x[b], ahora a va a ser x[b][a].
 			}
-			else a = ACCESS(a,k);//La primera vuelta va a ser el access original.
+			else {
+				 System.err.println("NO ERA UN JSACCESS");
+				a = ACCESS(a,k);//La primera vuelta va a ser el access original.
+			}
         }
-        a = ACCESS(a, off);//AL PURO FINAL EL OFFSET.
+		if(!(a instanceof JSOAccess))
+			a = ACCESS(a, off);//AL PURO FINAL EL OFFSET.
         SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
         symbolTable.put(x.getValue(), e);
         return a;
@@ -269,14 +274,20 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			this.offset = lastOffset;
 		System.err.println("--VisitPattList: creating predFirstPart");
 		//JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
-		JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(locate(X),NUM(0),NUM(restOffset))));
+		JSAst predicateFirstPart;
+		if(ctx.pattRestArray()!=null)
+			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(locate(X),NUM(0),NUM(restOffset))));
+		else
+			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
 		/*Este locate en la primera parte del predicado se
 		encarga de hacer todo el desmadre de los accesos, con el nuevo stack, etc.	
 		*/
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
-			JSAccess slice = SLICE(locate(X),NUM(restOffset));
+			JSAccess slice = SLICE(locate(X),NUM(restOffset));//$x.slice(1)
+			//JSAccess slice = SLICE(X,NUM(restOffset));
 			this.push(slice);
+			System.err.println("PRESTARRAY: LASTOFFSET: "+Integer.toString(lastOffset)+" OFFSET: "+Integer.toString(this.offset));
 			lastOffset = this.offset;
 			this.offset = 0;
 			System.err.println("--VisitPattList: creating predicateRestPart");
