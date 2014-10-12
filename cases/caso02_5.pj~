@@ -1,3 +1,0 @@
-rule largo2(a){
-    case a -> largoRC([a, 0])
-}
