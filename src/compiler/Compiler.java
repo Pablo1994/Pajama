@@ -268,7 +268,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		else
 			this.offset = lastOffset;
 		System.err.println("--VisitPattList: creating predFirstPart");
-		JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
+		//JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
+		JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(locate(X),NUM(0),NUM(restOffset))));
 		/*Este locate en la primera parte del predicado se
 		encarga de hacer todo el desmadre de los accesos, con el nuevo stack, etc.	
 		*/
