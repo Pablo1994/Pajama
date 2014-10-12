@@ -1,1 +1,1 @@
-java -cp .:lib:dist/*:$CLASSPATH pajama.test.TestPajama . $*
+java -cp .;lib;js.jar;dist/*;$CLASSPATH pajama.test.TestPajama . %*
