@@ -88,7 +88,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	
     public JSAst locate(JSId x) {//para todos los mortales.
         System.err.println("locate: "+x.getValue()+" "+stack+" "+this.offset);
-		if (this.offset < 0)return x;//retorno toda la vara.
+		if (this.offset < 0 && this.stack.isEmpty())return x;//retorno toda la vara.
         List<JSAst> rstack = new ArrayList<>();
 		
 		/*Meto TODO EL STACK(antes era de int,ahora jsast)*/
@@ -110,7 +110,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 				a = ACCESS(a,k);//La primera vuelta va a ser el access original.
 			}
         }
-		if(!(a instanceof JSOAccess))
+		/*Este cambio lo hice porque en algunos casos me estaba dando
+		error creo que en el apply, porque quiero que slice se vuelva
+		$x.slice(1)[offset], pero como vimos en el casesliceB si ocupo
+		que se vuelva eso.
+		*/
+		if(this.offset >=0)
 			a = ACCESS(a, off);//AL PURO FINAL EL OFFSET.
         SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
         symbolTable.put(x.getValue(), e);
@@ -217,7 +222,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitPatNum(PajamaParser.PatNumContext ctx) {
 		System.err.println("visitPatNum "+ctx.NUMBER().getText());
         JSAst n = NUM(Integer.valueOf(ctx.NUMBER().getText()));
-        return FUNCTION(FORMALS(X), RET(EQ(locatePatternID(X), n))); //function(x)x===n;
+        return FUNCTION(FORMALS(X), RET(EQ(locate(X), n))); //function(x)x===n;
     }
 
     @Override
@@ -275,10 +280,11 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("--VisitPattList: creating predFirstPart");
 		//JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
 		JSAst predicateFirstPart;
+		//JSAst xLocated = locate(X);
 		if(ctx.pattRestArray()!=null)
-			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(locate(X),NUM(0),NUM(restOffset))));
+			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(X,NUM(0),NUM(restOffset))));
 		else
-			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
+			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),X));
 		/*Este locate en la primera parte del predicado se
 		encarga de hacer todo el desmadre de los accesos, con el nuevo stack, etc.	
 		*/
@@ -286,16 +292,19 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		if(ctx.pattRestArray()!=null){
 			JSAccess slice = SLICE(locate(X),NUM(restOffset));//$x.slice(1)
 			if(slice != null) System.err.println("Habemus Slice");
-			this.push(slice);
+			if(lastOffset!=-1)
+				this.push(this.offset);
+			//this.push(slice);
 			System.err.println("PRESTARRAY: LASTOFFSET: "+Integer.toString(lastOffset)+" OFFSET: "+Integer.toString(this.offset));
 			lastOffset = this.offset;
-			this.offset = 0;
+			this.offset = -1;
 			System.err.println("--VisitPattList: creating predicateRestPart");
 			predicateRestPart=visit(ctx.pattRestArray());//esta visita va a ser relativa a la pila (comienza en 0 de nuevo)
 			this.offset = lastOffset;
-			this.stack.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
-			
-			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,locatePatternID(X)));
+			//this.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
+			if(lastOffset!=-1)
+				this.pop();//Pop para el num de offset
+			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,slice));
 			
 			resetAccess(X,slice);//Esto tampoco lo entendi.
 		}
@@ -364,6 +373,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
             return entry.getAccess().setId(X);
         }
         return id;*/
+		//return locate(id);
 		return locateExprID(id);
     }
 
