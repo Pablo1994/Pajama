@@ -1,3 +1,6 @@
 rule foo10(a){
   case [_|x] -> x
 }
+
+expectEQ("foo10([1,2])", "2");
+expectFAIL("foo10([])");

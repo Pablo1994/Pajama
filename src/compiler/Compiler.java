@@ -284,7 +284,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		*/
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
-			JSAccess slice = SLICE(locate(X)),NUM(restOffset));//$x.slice(1)
+			JSAccess slice = SLICE(locate(X),NUM(restOffset));//$x.slice(1)
 			if(slice != null) System.err.println("Habemus Slice");
 			this.push(slice);
 			System.err.println("PRESTARRAY: LASTOFFSET: "+Integer.toString(lastOffset)+" OFFSET: "+Integer.toString(this.offset));
