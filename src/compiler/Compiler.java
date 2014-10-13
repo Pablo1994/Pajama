@@ -77,8 +77,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         if (entry != null) {
 			//if((JSId)(entry.getAccess().left).getValue().equals(this.ruleName.getValue()))
 			System.err.println("--NON NULL ENTRY");
-			if(entry.getAccess().equals(TOP_ACCESS))
-				return entry.getAccess();
+			if(entry.getAccess().equals(TOP_ACCESS)){
+				return entry.getAccess();}
             return entry.getAccess().setId(X);
         }
 		System.err.println("NULL ENTRY RETURNING ID");
@@ -284,8 +284,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		*/
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
-			JSAccess slice = SLICE(locate(X),NUM(restOffset));//$x.slice(1)
-			//JSAccess slice = SLICE(X,NUM(restOffset));
+			JSAccess slice = SLICE(locate(X)),NUM(restOffset));//$x.slice(1)
+			if(slice != null) System.err.println("Habemus Slice");
 			this.push(slice);
 			System.err.println("PRESTARRAY: LASTOFFSET: "+Integer.toString(lastOffset)+" OFFSET: "+Integer.toString(this.offset));
 			lastOffset = this.offset;
@@ -295,7 +295,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			this.offset = lastOffset;
 			this.stack.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
 			
-			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,locate(X)));
+			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,locatePatternID(X)));
 			
 			resetAccess(X,slice);//Esto tampoco lo entendi.
 		}
@@ -516,7 +516,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 }
 
 
-/*locate viejo pre 10 oct RIP 2014-2014. D:
+/*locate viejo pre 10 oct RIP 2014-2014. D: 
 public JSAst locate(JSId x) { //En este decidí usar una bandera con el valor de offset, en vez de un símbolo, sumarle 100  cada vez que sea un slice.
         System.err.println("locate: "+x.getValue()+" "+stack+" "+this.offset);
 		if (this.offset < 0) {
