@@ -46,7 +46,7 @@ pattList : pattern (',' pattern)* ( '|' pattRestArray)?
 ;
 pattEmpty :
 ;
-pattRestArray : pattArray | pattRestID | pattAny
+pattRestArray : pattArray | pattRestID | pattAny | pattConstant | pattObject 
 ;
 
 pattPair : key ':' pattern

@@ -215,7 +215,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 
     @Override
     public JSAst visitPatNum(PajamaParser.PatNumContext ctx) {
-		System.err.println("visitPatNum"+ctx.NUMBER().getText());
+		System.err.println("visitPatNum "+ctx.NUMBER().getText());
         JSAst n = NUM(Integer.valueOf(ctx.NUMBER().getText()));
         return FUNCTION(FORMALS(X), RET(EQ(locatePatternID(X), n))); //function(x)x===n;
     }
@@ -244,7 +244,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     @Override
     public JSAst visitPattEmpty(PajamaParser.PattEmptyContext ctx) {
         System.err.println("VisitPattEmpty");
-        return EMPTY_PREDICATE();
+        return EMPTY_PREDICATE(locate(X));
     }
 
     @Override
@@ -295,7 +295,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			this.offset = lastOffset;
 			this.stack.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
 			
-			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,X));
+			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,locate(X)));
 			
 			resetAccess(X,slice);//Esto tampoco lo entendi.
 		}
@@ -436,15 +436,17 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		//JSID nomFunc = ctx.arithSingle().idSingle().getText();
 		List<JSAst> listArgs;
 		if(ctx.params() != null) {
+			System.err.println("--TIENE PARAMS");
 			listArgs = ctx.params().args().expr()
 		            .stream()
-		            .map((o) -> (JSAst) APP(visit(o),X))
+		            .map((o) -> (JSAst) APP(visit(o),locate(X)))
 		            .collect(Collectors.toList());
 		}
 		else {
+			System.err.println("--NO TIENE PARAMS");
 			listArgs = ctx.args().expr()
 		            .stream()
-		            .map((o) -> (JSAst) APP(visit(o),X))
+		            .map((o) -> (JSAst) APP(visit(o),locate(X)))
 		            .collect(Collectors.toList());	
 					System.err.println("Visit R!!");
 		}

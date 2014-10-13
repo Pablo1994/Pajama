@@ -51,8 +51,8 @@ public interface Emiter{
 	default JSAnd AND(JSAst l, JSAst r){return new JSAnd(l,r);}
 	default JSAst TO_BE_DONE(String msg){return ID(msg+"()");}
 	default JSAst FUNCALL(JSAst id, List<JSAst> args){return new JSFuncall(id,args);}
-	default JSAst EMPTY_PREDICATE(){
-		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY, X)));
+	default JSAst EMPTY_PREDICATE(JSAst x){
+		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY, x)));
 	}
 	default JSOAccess SLICE(JSAst a, JSAst n){
 		return new JSOAccess(a, SLICE, ARGS(n));
