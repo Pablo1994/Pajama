@@ -222,7 +222,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitPatNum(PajamaParser.PatNumContext ctx) {
 		System.err.println("visitPatNum "+ctx.NUMBER().getText());
         JSAst n = NUM(Integer.valueOf(ctx.NUMBER().getText()));
-        return FUNCTION(FORMALS(X), RET(EQ(locate(X), n))); //function(x)x===n;
+        return FUNCTION(FORMALS(X), RET(EQ(locatePatternID(X), n))); //function(x)x===n;
     }
 
     @Override
@@ -281,8 +281,9 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		//JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
 		JSAst predicateFirstPart;
 		//JSAst xLocated = locate(X);
+		//Stack 
 		if(ctx.pattRestArray()!=null)
-			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(X,NUM(0),NUM(restOffset))));
+			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(locate(X),NUM(0),NUM(restOffset))));
 		else
 			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),X));
 		/*Este locate en la primera parte del predicado se
@@ -294,18 +295,17 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			if(slice != null) System.err.println("Habemus Slice");
 			if(lastOffset!=-1)
 				this.push(this.offset);
-			//this.push(slice);
+			this.push(slice);
 			System.err.println("PRESTARRAY: LASTOFFSET: "+Integer.toString(lastOffset)+" OFFSET: "+Integer.toString(this.offset));
 			lastOffset = this.offset;
-			this.offset = -1;
+			this.offset = 0;
 			System.err.println("--VisitPattList: creating predicateRestPart");
 			predicateRestPart=visit(ctx.pattRestArray());//esta visita va a ser relativa a la pila (comienza en 0 de nuevo)
 			this.offset = lastOffset;
-			//this.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
+			this.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
 			if(lastOffset!=-1)
 				this.pop();//Pop para el num de offset
 			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,slice));
-			
 			resetAccess(X,slice);//Esto tampoco lo entendi.
 		}
 		else predicateComplete=predicateFirstPart;
@@ -324,7 +324,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         JSId id = ID(ctx.ID().getText());
 		//locate(id);//Mismo locate que un ID de expresión. por eso está mal. 10 oct.
 		
-		this.locatePatternID(id);//localiza un patron basado en el offset del ID.
+		this.locate(id);//localiza un patron basado en el offset del ID.
         return ANY;
     }
 
