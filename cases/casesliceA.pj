@@ -1,0 +1,3 @@
+rule casesliceA(a){
+	 case [p|[1]] -> p
+}

@@ -1,0 +1,3 @@
+rule casesliceB(a){
+	 case [1|p] -> p
+}

@@ -1,0 +1,7 @@
+rule casesliceDA(a){
+	 case [1|[2|p]] -> p
+}
+
+rule casesliceDB(a){
+	 case [[p|[2]|[1]] -> p
+}
