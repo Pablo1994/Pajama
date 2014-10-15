@@ -1,0 +1,177 @@
+asdasd
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
+		print("Entrando al if");
+        return (patListTest)([function($x) {
+		print("($x[0] === 1) "+($x[0] === 1));
+          return ($x[0] === 1);
+        }], $x.slice(0, 1)) /*primer patrest*/&& 
+				(function($x) {
+				  print("$x dentro del array generado por el pipe: "+$x);
+				  pruebas = $x;
+				  return (patListTest)([any], $x.slice(0, 1)/*idsingle? algo con las variables*/) &&/*segundo pat rest*/ 
+						  (function($x) {
+							print("$x de
