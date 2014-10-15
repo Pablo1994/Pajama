@@ -256,7 +256,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     public JSAst visitPattList(PajamaParser.PattListContext ctx) {
         System.err.println("VisitPattList con offset "+Integer.toString(this.offset));
         int lastOffset = this.offset;
-        if (this.offset > 0) {
+        if (this.offset > 0) {//nota: cambiar a >= en algun momento.
             this.push(this.offset);
         }
         this.offset = 0;

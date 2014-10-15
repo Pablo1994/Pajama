@@ -3,5 +3,5 @@ rule casesliceCA(a){
 }
 
 rule casesliceCB(a){
-	 case [1,[p|2]] -> p
+	 case [1,[p|[2]]] -> p
 }
