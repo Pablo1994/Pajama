@@ -60,7 +60,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		
 	public JSAst locatePatternID(JSId x){//revisa que sea toplevel y le pone el acceso.
 		System.err.println("locatePatternID: "+x.getValue()+" "+stack+" "+this.offset);
-		if(this.offset<0){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
+		if(this.offset<0 && this.stack.isEmpty()){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
 			//locateOnTopLevel();
 			setOnTopLevel(x);
 			return locateOnTopLevel();
@@ -249,7 +249,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     @Override
     public JSAst visitPattEmpty(PajamaParser.PattEmptyContext ctx) {
         System.err.println("VisitPattEmpty");
-        return EMPTY_PREDICATE(locate(X));
+        return EMPTY_PREDICATE((X));
     }
 
     @Override
@@ -283,29 +283,35 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		//JSAst xLocated = locate(X);
 		//Stack 
 		if(ctx.pattRestArray()!=null)
-			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE(locate(X),NUM(0),NUM(restOffset))));
-		else
-			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),X));
+			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE((X),NUM(0),NUM(restOffset))));
+		else{
+			if(this.offset!=-1)
+				predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),ACCESS(X,NUM(offset))));
+			else
+				predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),X));
+		}
+			
 		/*Este locate en la primera parte del predicado se
 		encarga de hacer todo el desmadre de los accesos, con el nuevo stack, etc.	
 		*/
 		JSAst predicateRestPart, predicateComplete;
 		if(ctx.pattRestArray()!=null){
-			JSAccess slice = SLICE(locate(X),NUM(restOffset));//$x.slice(1)
+		//JSAccess slice = SLICE(locatePatternID(X),NUM(restOffset));//$x.slice(1)
+			JSAccess slice = SLICE(X,NUM(restOffset));//$x.slice(1)
 			if(slice != null) System.err.println("Habemus Slice");
 			if(lastOffset!=-1)
 				this.push(this.offset);
 			this.push(slice);
 			System.err.println("PRESTARRAY: LASTOFFSET: "+Integer.toString(lastOffset)+" OFFSET: "+Integer.toString(this.offset));
 			lastOffset = this.offset;
-			this.offset = 0;
+			this.offset = -1;
 			System.err.println("--VisitPattList: creating predicateRestPart");
 			predicateRestPart=visit(ctx.pattRestArray());//esta visita va a ser relativa a la pila (comienza en 0 de nuevo)
 			this.offset = lastOffset;
 			this.pop();//le quito uno al stack no se por que. Ah si ya me acorde, es porque se supone que he visitado un nivel.
 			if(lastOffset!=-1)
 				this.pop();//Pop para el num de offset
-			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart,slice));
+			predicateComplete = AND(predicateFirstPart,APP(predicateRestPart, SLICE((X),NUM(restOffset))));
 			resetAccess(X,slice);//Esto tampoco lo entendi.
 		}
 		else predicateComplete=predicateFirstPart;
