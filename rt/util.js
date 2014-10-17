@@ -3,10 +3,10 @@ function patListTest(lp, n){
    var res = Array.isArray(n)
    && n.length == lp.length
    && lp.reduce(function(z, p) z && p(n), true);
-	//if(!Array.isArray(n))print("no es array");
-	//if(!n.length == lp.length)print("**Largos diferentes: "+n.length +" "+ lp.length);
-	//if(!lp.reduce(function(z, p) z && p(n), true))print("**El reduce no pego");
-	//print("**Resultado: "+res);
+	if(!Array.isArray(n))print("no es array");
+	if(!n.length == lp.length)print("**Largos diferentes: "+n.length +" "+ lp.length);
+	if(!lp.reduce(function(z, p) z && p(n), true))print("**El reduce no pego");
+	print("**Resultado: "+res);
 	return res;
 }
 
@@ -19,7 +19,9 @@ function fail(){
 }
 function any(x){
 	//print("Any("+x+")");
-	return x!=null && !patListTestEmpty(x);
+	if(x==null)print("ANY("+x+")==NULL");
+	if(patListTestEmpty(x))print("ANY("+x+")==PATLISTESTEMPTY");
+	return x!=null;
 }
 
  function expectEQ(expr, r){

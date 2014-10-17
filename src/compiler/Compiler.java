@@ -249,7 +249,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     @Override
     public JSAst visitPattEmpty(PajamaParser.PattEmptyContext ctx) {
         System.err.println("VisitPattEmpty");
-        return EMPTY_PREDICATE((X));
+        return EMPTY_PREDICATE(locatePatternID(X));
     }
 
     @Override
