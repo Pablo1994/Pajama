@@ -52,10 +52,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     Map<String, SymbolEntry> symbolTable;
     Stack<JSAst> stack = new Stack<>();
     int offset = 0;
+	String offsetS = "";
 	JSId ruleName;
 
 	public void push(JSAccess a){this.stack.push(a);}
 	public void push(int a){this.stack.push(NUM(a));}
+	public void push(String a){this.stack.push(ID(a));}
 	public JSAst pop(){return this.stack.pop();}
 		
 	public JSAst locatePatternID(JSId x){//revisa que sea toplevel y le pone el acceso.
