@@ -45,4 +45,6 @@ function any(x){
 	return false;
  }
 
+function unshift(a, x){a.unshift(x);return a;}
+
 function identidad(x)x;

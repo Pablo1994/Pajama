@@ -37,7 +37,7 @@ pattRestID : ID
 ;
 pattAny : '_'
 ;		
-pattObject        :  '{' pattPair* '}'
+pattObject        :  '{' pattPairs? '}'
 ;
 
 pattListOrEmpty : pattEmpty | pattList
@@ -48,7 +48,8 @@ pattEmpty :
 ;
 pattRestArray : pattArray | pattRestID
 ;
-
+pattPairs    : pattPair (',' pattPair)*
+;
 pattPair : key ':' pattern
 ;
 
@@ -62,7 +63,7 @@ pattConstant       : NUMBER  #PatNum
 
 params   : '[' args ']';
 object   : '{' pairs? '}';
-pairs    : pair (';' pair)*;
+pairs    : pair (',' pair)*;
 pair     : key ':' expr;
 key      : STRING | ID;
 
