@@ -74,6 +74,7 @@ public interface Emiter{
 	final JSId ARGUMENTS = new JSId("arguments");
     final JSId FAIL = new JSId("fail");
 	final JSNum NULL_OFFSET = new JSNum(-1);
+	final JSId PATOBJ = new JSId("patObjectTest");
     final JSId PATLIST = new JSId("patListTest");
 	final JSId ISEMPTY = new JSId("patListTestEmpty");
 	final JSId LENGTH_ID = new JSId("length");

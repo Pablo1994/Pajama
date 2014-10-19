@@ -225,6 +225,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return FUNCTION(FORMALS(X), RET(EQ(locatePatternID(X), n))); //function(x)x===n;
     }
 
+	@Override
+    public JSAst visitPatString(PajamaParser.PatStringContext ctx) {
+		System.err.println("visitExprString");
+        return STRING(ctx.STRING().getText());
+    }
+
     @Override
     public JSAst visitExprString(PajamaParser.ExprStringContext ctx) {
 		System.err.println("visitExprString");
@@ -278,10 +284,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		else
 			this.offset = lastOffset;
 		System.err.println("--VisitPattList: creating predFirstPart");
-		//JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
 		JSAst predicateFirstPart;
-		//JSAst xLocated = locate(X);
-		//Stack 
 		if(ctx.pattRestArray()!=null)
 			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE((X),NUM(0),NUM(restOffset))));
 		else{
@@ -364,10 +367,46 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
 
-	@Override
+	@Override 
 	public JSAst visitPattObject(PajamaParser.PattObjectContext ctx){
 		System.err.println("visitPattObject");
-		JSOAccess object = OACCESS(X, ID("att"));
+		int lastOffset = this.offset;
+        if (this.offset > 0) {//nota: cambiar a >= en algun momento.
+            this.push(this.offset);
+        }
+        this.offset = 0;
+        List<JSAst> pairs = new ArrayList<JSAst>();
+        ctx.pattPairs().pattPair()
+                .stream()
+                .forEach((p) -> {
+                    JSAst vp = visit(p);
+                    if (vp != null) {
+                        pairs.add(vp);
+                    }
+                    this.offset++;
+                });
+		if(!stack.empty() && ( (this.stack.peek() instanceof JSNum) ) ){
+			this.offset = ( ((JSNum)this.pop()).getValue());
+			//System.err.println("pattObject: tengo un acceso en el stack");
+			}
+		else
+			this.offset = lastOffset;
+		JSAst predicate;
+			if(this.offset!=-1)
+				predicate = APP(PATOBJ, ARGS(ARRAY(pairs),X));
+			else
+				predicate = APP(PATOBJ, ARGS(ARRAY(pairs),X));
+		return predicate;
+	}
+
+	@Override
+	public JSAst visitPattPair(PajamaParser.PattPairContext ctx){
+		System.err.println("visitPattPair");
+		JSAccess key = ACCESS(X, ID(ctx.key().getText()));
+		this.push(key);
+		JSAst value = visit(ctx.pattern());
+		JSAst object = FUNCTION(FORMALS(X),RET(EQ(key,value)));
+		System.err.println(object);
 		return object;
 	}
     //------------------------------------------------------------

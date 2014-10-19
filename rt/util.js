@@ -10,6 +10,14 @@ function patListTest(lp, n){
 	return res;
 }
 
+function patObjectTest(lp, n){
+   	print("PattObject: "+n);
+   var lp.reduce(function(z, p) z && p(n), true);
+	if(!lp.reduce(function(z, p) z && p(n), true))print("**El reduce no pego");
+	print("**Resultado: "+res);
+	return res;
+}
+
 function patListTestEmpty(x)
 	Array.isArray(x) && x.length==0;
 
