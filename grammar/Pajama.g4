@@ -37,7 +37,7 @@ pattRestID : ID
 ;
 pattAny : '_'
 ;		
-pattObject        :  '{' pattPair '}'
+pattObject        :  '{' pattPair* '}'
 ;
 
 pattListOrEmpty : pattEmpty | pattList

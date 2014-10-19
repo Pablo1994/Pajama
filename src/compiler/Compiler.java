@@ -367,7 +367,6 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	@Override
 	public JSAst visitPattObject(PajamaParser.PattObjectContext ctx){
 		System.err.println("visitPattObject");
-		
 	}
     //------------------------------------------------------------
 
