@@ -403,7 +403,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	public JSAst visitPattPair(PajamaParser.PattPairContext ctx){
 		System.err.println("visitPattPair");
 		JSAccess key = ACCESS(X, ID(ctx.key().getText()));
-		this.push(key);
+		//this.push(key);
 		JSAst value = visit(ctx.pattern());
 		JSAst object = FUNCTION(FORMALS(X),RET(EQ(key,value)));
 		System.err.println(object);

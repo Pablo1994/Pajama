@@ -6,9 +6,9 @@ function foo(o) {
       if (((patObjectTest)([function($x) {
         return ($x[name] === "juan"); //esto bien
       }, function($x) {
-        return ($x[name][age] === any); //esto casi bien
+        return ($x[age] === any); //esto bien
       }], $x))($n)) return (function($x) {
-        return $x[name][age][1]; //esto nada bien
+        return $x[1]; //esto mal, una solución salvaje sería hacer que el offset tambien acepte Strings, pero eso podría tener consecuencias feas.
       })($n);
       else return ($c)($n);
     })($x, fail);
