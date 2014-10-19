@@ -54,7 +54,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     int offset = 0;
 	JSId ruleName;
 
-	public void push(JSAccess a){this.stack.push(a);}/*POR QUE NO JSAST*/
+	public void push(JSAccess a){this.stack.push(a);}
 	public void push(int a){this.stack.push(NUM(a));}
 	public JSAst pop(){return this.stack.pop();}
 		
@@ -298,7 +298,6 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		if(ctx.pattRestArray()!=null){
 		//JSAccess slice = SLICE(locatePatternID(X),NUM(restOffset));//$x.slice(1)
 			JSAccess slice = SLICE(X,NUM(restOffset));//$x.slice(1)
-			if(slice != null) System.err.println("Habemus Slice");
 			if(lastOffset!=-1)
 				this.push(this.offset);
 			this.push(slice);
@@ -364,6 +363,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("visitPattAny");
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
+
+	@Override
+	public JSAst visitPattObject(PajamaParser.PattObjectContext ctx){
+		System.err.println("visitPattObject");
+		
+	}
     //------------------------------------------------------------
 
     @Override

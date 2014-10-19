@@ -1,0 +1,3 @@
+rule foo(n){
+     case r -> r
+}

@@ -1,6 +1,3 @@
 rule goo(n){
   case [x,2] ->x
 }
-
-expectEQ("goo([1,2])","1");
-expectFAIL("goo([1,1])");

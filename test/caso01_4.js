@@ -13,5 +13,4 @@ function goo(n) {
       else return ($c)($n);
     })($x, fail);
   })(n);
-}(expectEQ)("goo([1,2])", "1");
-(expectFAIL)("goo([1,1])");
+}
