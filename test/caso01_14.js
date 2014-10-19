@@ -8,7 +8,7 @@ function foo(o) {
       }, function($x) {
         return ($x[age] === any);
       }], $x))($n)) return (function($x) {
-        return $x[1];
+        return $x[age];
       })($n);
       else return ($c)($n);
     })($x, fail);
