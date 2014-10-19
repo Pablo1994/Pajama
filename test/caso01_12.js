@@ -17,7 +17,7 @@ function foo9(a) {
     return (function($n, $c) {
       if ((function($x) {
         return (patListTest)([any], $x.slice(0, 1)) && (function($x) {
-          return (patListTestEmpty)($x[null]);
+          return (patListTestEmpty)($x[-1]);
         })($x.slice(1));
       })($n)) return (function($x) {
         return true;

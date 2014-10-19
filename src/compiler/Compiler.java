@@ -70,13 +70,14 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			return locateOnTopLevel();
 		}
 		locate(x);
-		JSAtom off = new JSAtom(null);
-		if(this.offset >= 0)
-			off = NUM(this.offset);
-		if(this.offsetS != "")
-			off = ID(this.offsetS);
-		JSAccess a = ACCESS(x,off);
-		return a;//$x[offset]
+		if(this.offsetS != ""){
+			JSId offS = ID(this.offsetS);
+			JSAccess a = ACCESS(x,offS);
+			return a;//$x[offset]
+		}
+		JSNum offN = NUM(this.offset);
+		JSAccess a = ACCESS(x,offN);
+		return a;
 	}
 	
 	public JSAst locateExprID(JSId x){
@@ -106,13 +107,34 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		}
 		
         JSAst a = x;//Guardo el ID en JSast.
-		JSAtom off = new JSAtom(null);
-		if(this.offset>=0){
-			System.err.println("Entro con el numero");
-        	off = NUM(this.offset);//El offset en la lista actual para accesarla.
+		// ---------Si el offset es String --------------
+		if(this.offsetS != ""){
+				JSId off = ID(this.offsetS);
+		    for (JSAst k : rstack) {
+				if(k instanceof JSAccess){//Esta encadenando los access?
+					System.err.println("SI ERA JSACCESS");
+					JSAccess na = (JSAccess)k;
+					a = na.setLeft(a);//si era x[b], ahora a va a ser x[b][a].
+				}
+				else {
+					 System.err.println("NO ERA UN JSACCESS");
+					a = ACCESS(a,k);//La primera vuelta va a ser el access original.
+				}
+		    }
+			/*Este cambio lo hice porque en algunos casos me estaba dando
+			error creo que en el apply, porque quiero que slice se vuelva
+			$x.slice(1)[offset], pero como vimos en el casesliceB si ocupo
+			que se vuelva eso.
+			*/
+			if(this.offsetS != "")
+				a = ACCESS(a, off);
+		    SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
+		    symbolTable.put(x.getValue(), e);
+		    return a;
 		}
-		else if(this.offsetS != "")
-			off = ID(this.offsetS);
+		//------------- Fin si el offset es String ----------------
+		
+		JSNum off = NUM(this.offset);//El offset en la lista actual para accesarla.
         for (JSAst k : rstack) {
 			if(k instanceof JSAccess){//Esta encadenando los access?
 				System.err.println("SI ERA JSACCESS");
@@ -129,10 +151,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		$x.slice(1)[offset], pero como vimos en el casesliceB si ocupo
 		que se vuelva eso.
 		*/
-		if(this.offset >=0)
+		if(this.offset>=0)
 			a = ACCESS(a, off);//AL PURO FINAL EL OFFSET.
-		else if(this.offsetS != "")
-			a = ACCESS(a, off);
         SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
         symbolTable.put(x.getValue(), e);
         return a;
