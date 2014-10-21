@@ -17,8 +17,8 @@ function foo9(a) {
     return (function($n, $c) {
       if ((function($x) {
         return (patListTest)([any], $x.slice(0, 1)) && (function($x) {
-          return (patListTestEmpty)($x.slice(1));
-        })(arguments[0]);
+          return (patListTestEmpty)($x);
+        })($x.slice(1));
       })($n)) return (function($x) {
         return true;
       })($n);
@@ -32,7 +32,7 @@ function foo10(a) {
       if ((function($x) {
         return (patListTest)([function($x) {
           return ($x[0] === 1);
-        }], $x.slice(0, 1)) && (any)(arguments[0]);
+        }], $x.slice(0, 1)) && (any)($x.slice(1));
       })($n)) return (function($x) {
         return $x.slice(1);
       })($n);
@@ -47,7 +47,7 @@ function foo11(a) {
         return (patListTest)([function($x) {
           return ($x[0] === 1);
         }, function($x) {
-          return ((($x[1] > 0) && $x[1]) < 5);
+          return ($x[1] > 0);
         }], $x);
       })($n)) return (function($x) {
         return ($x[1] + 1);

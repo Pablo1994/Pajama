@@ -1,3 +1,3 @@
-rule foo3(a){
-	case[c | [r]] -> r + c
-} 
+rule foo(a){
+    case [c|[r]] -> r+c
+}

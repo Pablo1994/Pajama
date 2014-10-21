@@ -14,5 +14,4 @@ function foo(a) {
       else return ($c)($n);
     })($x, fail);
   })(a);
-}(expectEQ)("foo([0,2])", "2");
-(expectFAIL)("foo([1,1])");
+}

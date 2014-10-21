@@ -44,6 +44,7 @@ public interface Emiter{
     default JSAst LOAD(String s){ return new JSLoad(s);}
     default JSArray ARRAY(List<JSAst> args){ return new JSArray(args);}
     default JSAccess ACCESS(JSAst a, JSAst k){return new JSAccess(a, k);}
+	default JSOAccess OACCESS(JSAst a, JSId k){return new JSOAccess(a,k);}
     default JSAst RET(JSAst e){ return new JSReturn(e);}
     default JSAst OPER(String op){return new JSId(op);}
 	default JSPoint POINT(int x, JSAst y){return POINT(NUM(x), y);}
@@ -73,6 +74,7 @@ public interface Emiter{
 	final JSId ARGUMENTS = new JSId("arguments");
     final JSId FAIL = new JSId("fail");
 	final JSNum NULL_OFFSET = new JSNum(-1);
+	final JSId PATOBJ = new JSId("patObjectTest");
     final JSId PATLIST = new JSId("patListTest");
 	final JSId ISEMPTY = new JSId("patListTestEmpty");
 	final JSId LENGTH_ID = new JSId("length");

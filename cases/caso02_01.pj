@@ -1,0 +1,3 @@
+rule foo(a){
+    case [[x|r], c] -> r+c
+}

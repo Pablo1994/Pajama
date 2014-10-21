@@ -5,12 +5,12 @@ rule factorialCola(a){
    | case [n,r] ->  factorialCola([n-1, n*r])
 }
 rule factorial(n){
-      case n when n >= 0 -> factorialCola([n, 1])
+      case n when n>=0 -> factorialCola([n, 1])
 	| case n -> 0
 }
 
 rule largo(a){
-    case [] -> 0
+      case [] -> 0
     | case [_|r] -> largo(r)+1
 }
 

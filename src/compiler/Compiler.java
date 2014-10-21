@@ -23,9 +23,9 @@ class SymbolEntry {
 
     JSId x;
     JSAccess s;
-    JSNum offset;
+    JSAtom offset;
 
-    public SymbolEntry(JSId x, JSNum offset, JSAccess s) { //Aquí se debe cambiar la clase JSAccess por una clase abstracta encima de las dos(JSAccess,   JSOAccess)
+    public SymbolEntry(JSId x, JSAtom offset, JSAccess s) { 
         this.x = x;
         this.s = s;
         this.offset = offset;
@@ -35,12 +35,14 @@ class SymbolEntry {
         return this.s;
     }
 
-    public JSNum getOffset() {
+    public JSAtom getOffset() {
         return this.offset;
     }
 
     public void update() {
-        this.offset = new JSNum(this.offset.getValue() + 1);
+		if(this.offset instanceof JSNum){
+	        this.offset = new JSNum(((JSNum)this.offset).getValue() + 1);
+		}
     }
 
 }
@@ -52,23 +54,34 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     Map<String, SymbolEntry> symbolTable;
     Stack<JSAst> stack = new Stack<>();
     int offset = 0;
+	String offsetS = "";
 	JSId ruleName;
 
-	public void push(JSAccess a){this.stack.push(a);}/*POR QUE NO JSAST*/
+	public void push(JSAccess a){this.stack.push(a);}
 	public void push(int a){this.stack.push(NUM(a));}
+	public void push(String a){this.stack.push(ID(a));}
 	public JSAst pop(){return this.stack.pop();}
 		
 	public JSAst locatePatternID(JSId x){//revisa que sea toplevel y le pone el acceso.
 		System.err.println("locatePatternID: "+x.getValue()+" "+stack+" "+this.offset);
-		if(this.offset<0 && this.stack.isEmpty()){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
+		if(this.offset<0 && this.offsetS == ""){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
 			//locateOnTopLevel();
-			setOnTopLevel(x);
-			return locateOnTopLevel();
+			if(this.stack.isEmpty()){
+			  setOnTopLevel(x);
+			  return locateOnTopLevel();
+			} else {
+			  return x;
+			}
 		}
 		locate(x);
-		JSNum off = NUM(this.offset);
-		JSAccess a = ACCESS(x,off);
-		return a;//$x[offset]
+		if(this.offsetS != ""){
+			JSId offS = ID(this.offsetS);
+			JSAccess a = ACCESS(x,offS);
+			return a;//$x[offset]
+		}
+		JSNum offN = NUM(this.offset);
+		JSAccess a = ACCESS(x,offN);
+		return a;
 	}
 	
 	public JSAst locateExprID(JSId x){
@@ -88,7 +101,8 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	
     public JSAst locate(JSId x) {//para todos los mortales.
         System.err.println("locate: "+x.getValue()+" "+stack+" "+this.offset);
-		if (this.offset < 0 && this.stack.isEmpty())return x;//retorno toda la vara.
+		if (this.offset < 0 && this.offsetS == "" && this.stack.isEmpty())return x;//retorno toda la vara.
+
         List<JSAst> rstack = new ArrayList<>();
 		
 		/*Meto TODO EL STACK(antes era de int,ahora jsast)*/
@@ -97,8 +111,34 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		}
 		
         JSAst a = x;//Guardo el ID en JSast.
-        JSNum off = NUM(this.offset);//El offset en la lista actual para accesarla.
+		// ---------Si el offset es String --------------
+		if(this.offsetS != ""){
+				JSId off = ID(this.offsetS);
+		    for (JSAst k : rstack) {
+				if(k instanceof JSAccess){//Esta encadenando los access?
+					System.err.println("SI ERA JSACCESS");
+					JSAccess na = (JSAccess)k;
+					a = na.setLeft(a);//si era x[b], ahora a va a ser x[b][a].
+				}
+				else {
+					 System.err.println("NO ERA UN JSACCESS");
+					a = ACCESS(a,k);//La primera vuelta va a ser el access original.
+				}
+		    }
+			/*Este cambio lo hice porque en algunos casos me estaba dando
+			error creo que en el apply, porque quiero que slice se vuelva
+			$x.slice(1)[offset], pero como vimos en el casesliceB si ocupo
+			que se vuelva eso.
+			*/
+			if(this.offsetS != "")
+				a = ACCESS(a, off);
+		    SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
+		    symbolTable.put(x.getValue(), e);
+		    return a;
+		}
+		//------------- Fin si el offset es String ----------------
 		
+		JSNum off = NUM(this.offset);//El offset en la lista actual para accesarla.
         for (JSAst k : rstack) {
 			if(k instanceof JSAccess){//Esta encadenando los access?
 				System.err.println("SI ERA JSACCESS");
@@ -115,7 +155,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		$x.slice(1)[offset], pero como vimos en el casesliceB si ocupo
 		que se vuelva eso.
 		*/
-		if(this.offset >=0)
+		if(this.offset>=0)
 			a = ACCESS(a, off);//AL PURO FINAL EL OFFSET.
         SymbolEntry e = new SymbolEntry(x, off, (JSAccess) a);
         symbolTable.put(x.getValue(), e);
@@ -225,6 +265,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return FUNCTION(FORMALS(X), RET(EQ(locatePatternID(X), n))); //function(x)x===n;
     }
 
+	@Override
+    public JSAst visitPatString(PajamaParser.PatStringContext ctx) {
+		System.err.println("visitExprString");
+        return STRING(ctx.STRING().getText());
+    }
+
     @Override
     public JSAst visitExprString(PajamaParser.ExprStringContext ctx) {
 		System.err.println("visitExprString");
@@ -278,10 +324,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		else
 			this.offset = lastOffset;
 		System.err.println("--VisitPattList: creating predFirstPart");
-		//JSAst predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),locate(X)));
 		JSAst predicateFirstPart;
-		//JSAst xLocated = locate(X);
-		//Stack 
 		if(ctx.pattRestArray()!=null)
 			predicateFirstPart = APP(PATLIST,ARGS(ARRAY(args),SLICE((X),NUM(0),NUM(restOffset))));
 		else{
@@ -298,7 +341,6 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		if(ctx.pattRestArray()!=null){
 		//JSAccess slice = SLICE(locatePatternID(X),NUM(restOffset));//$x.slice(1)
 			JSAccess slice = SLICE(X,NUM(restOffset));//$x.slice(1)
-			if(slice != null) System.err.println("Habemus Slice");
 			if(lastOffset!=-1)
 				this.push(this.offset);
 			this.push(slice);
@@ -364,6 +406,47 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("visitPattAny");
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
+
+	@Override 
+	public JSAst visitPattObject(PajamaParser.PattObjectContext ctx){
+		System.err.println("visitPattObject");
+		String lastOffsetS = this.offsetS;
+        if (this.offsetS != "") {//nota: cambiar a >= en algun momento.
+            this.push(this.offsetS);
+        }
+        this.offsetS = "";
+        List<JSAst> pairs = new ArrayList<JSAst>();
+        ctx.pattPairs().pattPair()
+                .stream()
+                .forEach((p) -> {
+                    JSAst vp = visit(p);
+                    if (vp != null) {
+                        pairs.add(vp);
+                    }
+                    //this.offset++;
+                });
+		if(!stack.empty() && ( (this.stack.peek() instanceof JSId) ) ){
+			this.offsetS = ( ((JSId)this.pop()).getValue());
+			//System.err.println("pattObject: tengo un acceso en el stack");
+			}
+		else
+			this.offsetS = lastOffsetS;
+		JSAst predicate = APP(PATOBJ, ARGS(ARRAY(pairs),X));
+		return predicate;
+	}
+
+	@Override
+	public JSAst visitPattPair(PajamaParser.PattPairContext ctx){
+		System.err.println("visitPattPair");
+		if(!this.stack.empty())
+			this.pop();
+		JSAccess key = ACCESS(X, STRING("\""+ctx.key().getText()+"\""));
+		this.push(key);
+		JSAst value = visit(ctx.pattern());
+		JSAst object = FUNCTION(FORMALS(X),RET(EQ(key,value)));
+		System.err.println(object);
+		return object;
+	}
     //------------------------------------------------------------
 
     @Override

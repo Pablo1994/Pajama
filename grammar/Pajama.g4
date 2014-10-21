@@ -13,8 +13,10 @@ testStatement : ID '(' args? ')' ';'
 
 formal            : '(' ID ')'
 ;
-ruleBody          : caseRule ('|' caseRule)*;
-caseRule          : 'case' pattern '->' expr  ;
+ruleBody          : caseRule ('|' caseRule)*
+;
+caseRule          : 'case' pattern '->' expr  
+;
 
 // PATTERN
 pattern  :   pattInit(pattRest)? 
@@ -37,7 +39,7 @@ pattRestID : ID
 ;
 pattAny : '_'
 ;		
-pattObject        :  '{' pattPair '}'
+pattObject        :  '{' pattPairs? '}'
 ;
 
 pattListOrEmpty : pattEmpty | pattList
@@ -48,7 +50,8 @@ pattEmpty :
 ;
 pattRestArray : pattArray | pattRestID
 ;
-
+pattPairs    : pattPair (',' pattPair)*
+;
 pattPair : key ':' pattern
 ;
 
@@ -57,26 +60,35 @@ pattConstant       : NUMBER  #PatNum
                    | STRING  #PatString
 				   | 'true'  #PatTrue
 				   | 'false' #PatFalse
-				   | 'null'  #NullPat
-				   ;
-
-params   : '[' args ']';
-object   : '{' pairs? '}';
-pairs    : pair (';' pair)*;
-pair     : key ':' expr;
-key      : STRING | ID;
+				   | 'null'  #NullPat				   
+;
+params   : '[' args ']'
+;
+object   : '{' pairs? '}'
+;
+pairs    : pair (',' pair)*
+;
+pair     : key ':' expr
+;
+key      : STRING | ID
+;
 
 // EXPRESSION
-expr      : relMonom ('||' relMonom)*;
-relMonom  : relOperation ('&&' relOperation)*;
+expr      : relMonom ('||' relMonom)*
+;
+relMonom  : relOperation ('&&' relOperation)*
+;
 
 relOperation :      arithOperation ( relOperator arithOperation)*
                  | '!'  relOperation
 ;
-relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=' | '&&' | '||');
+relOperator :	op=('>' | '<' | '==' | '<=' | '>=' | '!=' | '&&' | '||')
+;
 			
-arithOperation : arithMonom (operAddPlus arithMonom)*;
-arithMonom     : arithSingle (operTimesDiv arithSingle)*;
+arithOperation : arithMonom (operAddPlus arithMonom)*
+;
+arithMonom     : arithSingle (operTimesDiv arithSingle)*
+;
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
                    | arithSingle '(' (params | args)? ')' 	#FunCallExpr
@@ -104,7 +116,7 @@ args   :  expr (',' expr)*
 
 NUMBER : INTEGER ('.' INTEGER)? ;
 fragment INTEGER : [0-9]+ ;
-STRING : ('"' (~'"')* '"' );
+STRING : ('"' (~'"')* '"' ) | ('\'' (~'\'')* '\'' );
 
 ID : [a-zA-Z][a-zA-Z_0-9]* ;
 ADD: '+';

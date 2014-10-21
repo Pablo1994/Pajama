@@ -1,7 +1,5 @@
-rule fooarg(a){
-	case [k,s]-> k
+rule foo(n){
+     case r -> r
 }
-
-expectEQ("fooarg([1,2])", "false");
-expectEQ("fooarg([3,4])", "true");
-expectFAIL("fooarg(2)");
+expectEQ("foo(6)","6");
+expectEQ("foo([6])","[6]");

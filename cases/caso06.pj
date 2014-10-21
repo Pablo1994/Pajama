@@ -7,4 +7,4 @@ rule map(a){
 rule square(x){
    case x -> x*x
 }
-expectEQ("map([[1,2,3], square])", "[1,4,9]");
+expectEQ("map([[1,2,3], square])", "1,4,9");

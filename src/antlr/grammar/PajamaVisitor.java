@@ -193,6 +193,12 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPatTrue(@NotNull PajamaParser.PatTrueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattPairs}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattPairs(@NotNull PajamaParser.PattPairsContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code PatString}
 	 * labeled alternative in {@link PajamaParser#pattConstant}.
 	 * @param ctx the parse tree
