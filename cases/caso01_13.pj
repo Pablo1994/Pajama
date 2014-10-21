@@ -1,3 +1,5 @@
 rule foo(n){
      case r -> r
 }
+expectEQ("foo(6)","6");
+expectEQ("foo([6])","[6]")

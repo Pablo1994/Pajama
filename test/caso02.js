@@ -55,7 +55,7 @@ function largo(a) {
   return (function($x) {
     return (function($n, $c) {
       if ((function($x) {
-        return (patListTestEmpty)(arguments[0]);
+        return (patListTestEmpty)($x);
       })($n)) return (function($x) {
         return 0;
       })($n);
@@ -79,7 +79,7 @@ function largoRC(a) {
     return (function($n, $c) {
       if ((function($x) {
         return (patListTest)([function($x) {
-          return (patListTestEmpty)($x[0]);
+          return (patListTestEmpty)($x);
         },
         any], $x);
       })($n)) return (function($x) {

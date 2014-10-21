@@ -64,10 +64,14 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		
 	public JSAst locatePatternID(JSId x){//revisa que sea toplevel y le pone el acceso.
 		System.err.println("locatePatternID: "+x.getValue()+" "+stack+" "+this.offset);
-		if(this.offset<0 && this.offsetS == "" && this.stack.isEmpty()){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
+		if(this.offset<0 && this.offsetS == ""){//No estamos metidos dentro de ninguna lista. (El argumento no es un array)
 			//locateOnTopLevel();
-			setOnTopLevel(x);
-			return locateOnTopLevel();
+			if(this.stack.isEmpty()){
+			  setOnTopLevel(x);
+			  return locateOnTopLevel();
+			} else {
+			  return x;
+			}
 		}
 		locate(x);
 		if(this.offsetS != ""){
@@ -291,7 +295,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     @Override
     public JSAst visitPattEmpty(PajamaParser.PattEmptyContext ctx) {
         System.err.println("VisitPattEmpty");
-        return EMPTY_PREDICATE(X);
+        return EMPTY_PREDICATE(locatePatternID(X));
     }
 
     @Override
@@ -436,7 +440,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("visitPattPair");
 		if(!this.stack.empty())
 			this.pop();
-		JSAccess key = ACCESS(X, ID(ctx.key().getText()));
+		JSAccess key = ACCESS(X, STRING("\""+ctx.key().getText()+"\""));
 		this.push(key);
 		JSAst value = visit(ctx.pattern());
 		JSAst object = FUNCTION(FORMALS(X),RET(EQ(key,value)));

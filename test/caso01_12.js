@@ -4,7 +4,7 @@ function foo8(a) {
   return (function($x) {
     return (function($n, $c) {
       if ((function($x) {
-        return (patListTestEmpty)(arguments[0]);
+        return (patListTestEmpty)($x);
       })($n)) return (function($x) {
         return true;
       })($n);
@@ -17,7 +17,7 @@ function foo9(a) {
     return (function($n, $c) {
       if ((function($x) {
         return (patListTest)([any], $x.slice(0, 1)) && (function($x) {
-          return (patListTestEmpty)($x[-1]);
+          return (patListTestEmpty)($x);
         })($x.slice(1));
       })($n)) return (function($x) {
         return true;

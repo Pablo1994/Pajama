@@ -1,3 +1,4 @@
 rule foo10(a){
   case [1|x] -> x
 }
+expectEQ("foo10([1,6])","6");
