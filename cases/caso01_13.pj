@@ -1,0 +1,7 @@
+rule fooarg(a){
+	case [k,s]-> k
+}
+
+expectEQ("fooarg([1,2])", "false");
+expectEQ("fooarg([3,4])", "true");
+expectFAIL("fooarg(2)");
