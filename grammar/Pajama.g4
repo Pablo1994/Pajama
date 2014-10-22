@@ -48,7 +48,7 @@ pattList : pattern (',' pattern)* ( '|' pattRestArray)?
 ;
 pattEmpty :
 ;
-pattRestArray : pattArray | pattRestID
+pattRestArray : pattArray | pattRestID | pattAny
 ;
 pattPairs    : pattPair (',' pattPair)*
 ;
@@ -92,6 +92,7 @@ arithMonom     : arithSingle (operTimesDiv arithSingle)*
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
                    | arithSingle '(' (params | args)? ')' 	#FunCallExpr
+                   | ID '[' NUMBER ']' 			#ArrayAccessExpr
 		           | arithSingle ('.' ID)+ 		#ObjectAccess
 				   | idSingle 					#idExpr
 				   | object						#ObjectExpr

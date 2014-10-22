@@ -1,9 +1,0 @@
-// Caso 3 Patron head-tail en Array
-
-rule size(a){
-   case [[], s] -> s
-   | case [[h|t], s] -> size([t, s+1])
-}
-
-expectEQ("size([[1,2,3,4],0])","4");
-expectFAIL("size(1)");
