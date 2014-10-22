@@ -1,4 +1,5 @@
 rule foo(n){
-   case [x, y] -> 1+x+y+g(x) // expr --> arithOperation 1,x,y y g(x) arithMonom
+   case [x, y, g] -> 1+x+y+g(x) 
 }
-expectEQ("foo([2,4])","11");
+
+expectEQ("foo([2, 3, function(x){return x+2;}])", "10");

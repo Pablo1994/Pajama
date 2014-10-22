@@ -1,5 +1,7 @@
 rule foo(o){
-     case {name:"juan", age:a} -> a
+    case {name:'juan', age:a} -> a
+	
 }
 
-expectEQ("foo({name:'juan', age:20})","20");
+expectEQ('foo({name:"juan", age:20})',"20");
+

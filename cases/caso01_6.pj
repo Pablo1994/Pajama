@@ -1,5 +1,5 @@
 rule foo(a){
      case [0,r] -> r
+   
 }
-expectEQ("foo([0,7])","7");
-expectFAIL("foo([0])");
+expectEQ("foo([0, 42])", "42");
