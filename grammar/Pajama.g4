@@ -38,11 +38,14 @@ pattID : ID
 pattRestID : ID
 ;
 pattAny : '_'
-;		
-pattObject        :  '{' pattPairs? '}'
 ;
+pattObject : '{' pattPairOrEmpty '}'		
+//pattObject        :  '{' pattPairs? '}';
+
 
 pattListOrEmpty : pattEmpty | pattList
+;
+pattPairOrEmpty : pattPairEmpty | pattPairList
 ;
 pattList : pattern (',' pattern)* ( '|' pattRestArray)?
 ;
@@ -50,7 +53,7 @@ pattEmpty :
 ;
 pattRestArray : pattArray | pattRestID
 ;
-pattPairs    : pattPair (',' pattPair)*
+pattPairList    : pattPair (',' pattPair)*
 ;
 pattPair : key ':' pattern
 ;

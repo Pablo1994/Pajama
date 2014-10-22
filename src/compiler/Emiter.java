@@ -55,6 +55,9 @@ public interface Emiter{
 	default JSAst EMPTY_PREDICATE(JSAst x){
 		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY, x)));
 	}
+	default JSAst EMPTY_OBJECT_PREDICATE(JSAst x){
+		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY_OBJECT, x)));
+	}
 	default JSOAccess SLICE(JSAst a, JSAst n){
 		return new JSOAccess(a, SLICE, ARGS(n));
 	}
@@ -63,6 +66,9 @@ public interface Emiter{
 	}
 	default JSAccess TOP(){
 		return TOP_ACCESS;
+	}
+	default JSObject OBJECT(List<JSAst> pairs){
+		return new JSObject(pairs);
 	}
 	final JSId ANY = new JSId("any");
     final JSBool TRUE = new JSBool(true);
@@ -77,6 +83,7 @@ public interface Emiter{
 	final JSId PATOBJ = new JSId("patObjectTest");
     final JSId PATLIST = new JSId("patListTest");
 	final JSId ISEMPTY = new JSId("patListTestEmpty");
+	final JSId ISEMPTY_OBJECT = new JSId("patObjectTestEmpty");	
 	final JSId LENGTH_ID = new JSId("length");
 	final JSId SLICE = new JSId("slice");
 	final JSAccess TOP_ACCESS = new JSAccess(ARGUMENTS,ZERO);

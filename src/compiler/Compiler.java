@@ -406,9 +406,29 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("visitPattAny");
         return FUNCTION(FORMALS(X), RET(TRUE));
     }
-
+	
 	@Override 
 	public JSAst visitPattObject(PajamaParser.PattObjectContext ctx){
+		System.err.println("visitPattObject");
+		return visit(ctx.pattPairOrEmpty());
+	}
+	
+	@Override 
+	public JSAst visitPattPairOrEmpty(PajamaParser.PattPairOrEmptyContext ctx){
+		System.err.println("visitPattPairOrEmpty");
+		if(ctx.pattPairList()==null)return visit(ctx.pattPairEmpty());
+		return visit(ctx.pattPairOrEmpty());
+	}
+	
+	@Override 
+	public JSAst visitPattPairEmpty(PajamaParser.PattPairEmptyContext ctx){
+		System.err.println("visitPattPairOrEmpty");
+		JSAst a = locatePatternID(X);
+		return  EMPTY_OBJECT_PREDICATE(a);
+	}
+	
+	@Override 
+	public JSAst visitPattPairList(PajamaParser.PattPairListContext ctx){
 		System.err.println("visitPattObject");
 		String lastOffsetS = this.offsetS;
         if (this.offsetS != "") {//nota: cambiar a >= en algun momento.
@@ -431,13 +451,14 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			}
 		else
 			this.offsetS = lastOffsetS;
-		JSAst predicate = APP(PATOBJ, ARGS(ARRAY(pairs),X));
+		JSAst predicate = FUNCTION(FORMALS(X),RET(APP(PATOBJ, ARGS(ARRAY(pairs),X))));
 		return predicate;
 	}
+	
 
 	@Override
 	public JSAst visitPattPair(PajamaParser.PattPairContext ctx){
-		System.err.println("visitPattPair");
+		System.err.println("vi sitPattPair");
 		if(!this.stack.empty())
 			this.pop();
 		JSAccess key = ACCESS(X, STRING("\""+ctx.key().getText()+"\""));
@@ -448,7 +469,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		return object;
 	}
     //------------------------------------------------------------
-
++
     @Override
     public JSAst visitIdSingle(PajamaParser.IdSingleContext ctx) {
 		System.err.println("visitIdSingle "+ctx.ID().getText());
@@ -485,7 +506,6 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
                     int k = p.index;
                     return POINT(p.add(1).index, OPERATION(opers.get(k), p.y, m));
                 });
-				
 				/*Para entender mejor el algoritmo:
 		JSAst a = monoms.get(0);
 		for(int i=1;i<monoms.length;i++){

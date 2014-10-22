@@ -10,11 +10,17 @@ function patListTest(lp, n) {
 
 function patObjectTest(lp, n) {
     print("PattObject: " + n);
-    var res = lp.reduce(function(z, p) z && p(n), true);
+	if(typeof n!='object')return false;
+	var keys = Object.keys(n);	
+    var res = keys.reduce(function(z, p) z && p(n), true);
     if (!lp.reduce(function(z, p) z && p(n), true)) print("**El reduce no pego");
     print("**Resultado: " + res);
     return res;
 }
+function patObjectTestEmpty(o){
+	return typeof o==='object'&&Object.keys(o).length==0;
+}
+
 
 function patListTestEmpty(x)
 Array.isArray(x) && x.length == 0;
