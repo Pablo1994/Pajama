@@ -8,7 +8,7 @@ function second(a) {
           return true;
         })($x.slice(2));
       })($n)) return (function($x) {
-        return x[1];  //Esto tiene que ser $X[1];
+        return x[1];
       })($n);
       else return ($c)($n);
     })($x, fail);

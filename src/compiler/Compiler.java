@@ -396,7 +396,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         JSId id = ID(ctx.ID().getText());
 		//locate(id);//Mismo locate que un ID de expresión. por eso está mal. 10 oct.
 		
-		this.locate(id);//localiza un patron basado en el offset del ID.
+		this.locatePatternID(id);//localiza un patron basado en el offset del ID.
         return ANY;
     }
 

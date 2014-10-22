@@ -31,11 +31,11 @@ function factorialCola(a) {
 function factorial(n) {
   return (function($x) {
     return (function($n, $c) {
-      if ((function($x) {
-        return (n >= 0);
+      if ((any && function($x) {
+        return (arguments[0] >= 0);
       })($n)) return (function($x) {
         return (factorialCola)([(function($x) {
-          return n;
+          return arguments[0];
         })($x), (function($x) {
           return 1;
         })($x)]);
@@ -55,7 +55,7 @@ function largo(a) {
   return (function($x) {
     return (function($n, $c) {
       if ((function($x) {
-        return (patListTestEmpty)($x);
+        return (patListTestEmpty)(arguments[0]);
       })($n)) return (function($x) {
         return 0;
       })($n);
@@ -79,7 +79,7 @@ function largoRC(a) {
     return (function($n, $c) {
       if ((function($x) {
         return (patListTest)([function($x) {
-          return (patListTestEmpty)($x);
+          return (patListTestEmpty)($x[0]);
         },
         any], $x);
       })($n)) return (function($x) {
@@ -110,7 +110,7 @@ function largo2(a) {
     return (function($n, $c) {
       if ((any)($n)) return (function($x) {
         return (largoRC)([(function($x) {
-          return a;
+          return arguments[0];
         })($x), (function($x) {
           return 0;
         })($x)]);
@@ -122,4 +122,3 @@ function largo2(a) {
 (expectEQ)("factorial(-5)", "0");
 (expectEQ)("largo([1,2,3])", "3");
 (expectEQ)("largo2([1,2,3])", "3");
-(expectFAIL)("largo2(2)");
