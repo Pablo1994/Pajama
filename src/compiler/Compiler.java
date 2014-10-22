@@ -257,6 +257,27 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return FUNCTION(FORMALS(N, C),
                 IF(APP(p, N), RET(e), RET(APP(C, N))));
     }
+    
+    @Override
+	public JSAst visitPattern(PajamaParser.PatternContext ctx){
+		JSAst i = visit(ctx.pattInit());
+		if(ctx.pattRest() == null)
+			return i;
+		System.err.println("----- Visitando a pattRest...");
+		JSAst r = visit(ctx.pattRest());
+		return AND(i,r); // Por el momento
+	}
+	
+	/*@Override 
+	public JSAst visitPRSave(PajamaParser.PRSaveContext ctx){
+		JSID id = ID(ctx.ID().getText());
+	}*/
+	
+	@Override 
+	public JSAst visitPRWhen(PajamaParser.PRWhenContext ctx){
+		System.err.println("visitPRWhen");
+		return visit(ctx.expr());
+	}
 
     @Override
     public JSAst visitPatNum(PajamaParser.PatNumContext ctx) {

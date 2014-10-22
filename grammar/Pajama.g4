@@ -17,16 +17,16 @@ ruleBody          : caseRule ('|' caseRule)*
 ;
 caseRule          : 'case' pattern '->' expr  
 ;
-
+	
 // PATTERN
 pattern  :   pattInit(pattRest)? 
            | '(' pattern ')'
 ;
-pattInit :            ID  #PId
-					| '_' #PAny
-                    | pattArray  #PArray
-					| pattObject #PObject
-					| pattConstant  #PCte
+pattInit :   ID  #PId
+		    | '_' #PAny
+			| pattArray  #PArray
+		    | pattObject #PObject
+		    | pattConstant  #PCte
 ;		
 pattRest :            '@' ID #PRSave
                     | 'when' expr #PRWhen
