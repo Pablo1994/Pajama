@@ -26,7 +26,6 @@ expectEQ("factorial(5)", "120");
 expectEQ("factorial(-5)", "0");
 expectEQ("largo([1,2,3])", "3");
 expectEQ("largo2([1,2,3])", "3");
-expectFAIL("largo2(2)");
 
 
 

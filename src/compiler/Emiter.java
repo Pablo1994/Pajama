@@ -41,6 +41,9 @@ public interface Emiter{
     default JSAst OPERATION(JSAst oper, JSAst a, JSAst b){
         return new JSOperation(oper, a, b);
     }
+    default JSAst ASSIGN(JSAst a, JSAst b){
+		return OPERATION(OPER("="),a,b);
+    }
     default JSAst LOAD(String s){ return new JSLoad(s);}
     default JSArray ARRAY(List<JSAst> args){ return new JSArray(args);}
     default JSAccess ACCESS(JSAst a, JSAst k){return new JSAccess(a, k);}
@@ -73,6 +76,7 @@ public interface Emiter{
 	default JSObject OBJECT(List<JSAst> pairs){
 		return new JSObject(pairs);
 	}
+	final JSArray EMPTY_ARRAY = new JSArray();
 	final JSId ANY = new JSId("any");
     final JSBool TRUE = new JSBool(true);
     final JSBool FALSE = new JSBool(false);

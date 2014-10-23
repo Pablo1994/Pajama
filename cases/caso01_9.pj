@@ -2,5 +2,9 @@ rule foo9(a){
   case [x|[]] -> true
 }
 
+<<<<<<< HEAD
 expectEQ("foo9([42])", "42");
+=======
+expectEQ("foo9([42])", "true");
+>>>>>>> b5d030630394032bfd84e1be55513586e71ec300
 expectFAIL("foo9([42, []])");

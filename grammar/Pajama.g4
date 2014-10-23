@@ -17,16 +17,16 @@ ruleBody          : caseRule ('|' caseRule)*
 ;
 caseRule          : 'case' pattern '->' expr  
 ;
-
+	
 // PATTERN
 pattern  :   pattInit(pattRest)? 
            | '(' pattern ')'
 ;
-pattInit :            ID  #PId
-					| '_' #PAny
-                    | pattArray  #PArray
-					| pattObject #PObject
-					| pattConstant  #PCte
+pattInit :   ID  #PId
+		    | '_' #PAny
+			| pattArray  #PArray
+		    | pattObject #PObject
+		    | pattConstant  #PCte
 ;		
 pattRest :            '@' ID #PRSave
                     | 'when' expr #PRWhen
@@ -55,6 +55,7 @@ pattEmpty :
 pattPairEmpty:
 ;
 pattRestArray : pattArray | pattRestID
+
 ;
 pattPairList    : pattPair (',' pattPair)*
 ;
@@ -98,6 +99,8 @@ arithMonom     : arithSingle (operTimesDiv arithSingle)*
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
                    | arithSingle '(' (params | args)? ')' 	#FunCallExpr
+                   | '['']'						#EmptyArrayExpr
+                   | idSingle '[' NUMBER ']' 			#ArrayAccessExpr
 		           | arithSingle ('.' ID)+ 		#ObjectAccess
 				   | idSingle 					#idExpr
 				   | object						#ObjectExpr

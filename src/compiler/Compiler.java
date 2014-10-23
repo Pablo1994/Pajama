@@ -100,7 +100,10 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			//if((JSId)(entry.getAccess().left).getValue().equals(this.ruleName.getValue()))
 			System.err.println("--NON NULL ENTRY");
 			if(entry.getAccess().equals(TOP_ACCESS)){
-				return entry.getAccess();}
+				System.err.println("Aquí está llegando bien");
+				return entry.getAccess();
+				
+			}
             return entry.getAccess().setId(X);
         }
 		System.err.println("NULL ENTRY RETURNING ID");
@@ -249,6 +252,33 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
         return FUNCTION(FORMALS(N, C),
                 IF(APP(p, N), RET(e), RET(APP(C, N))));
     }
+    
+    @Override
+	public JSAst visitPattern(PajamaParser.PatternContext ctx){
+		JSAst i = visit(ctx.pattInit());
+		if(ctx.pattRest() == null)
+			return i;
+		System.err.println("-----Visitando a pattRest...");
+		JSAst r = visit(ctx.pattRest());
+		if(r instanceof JSFunction)
+			return AND(i,r);
+		return i;
+	}
+	
+	@Override 
+	public JSAst visitPRSave(PajamaParser.PRSaveContext ctx){
+		JSId id = ID(ctx.ID().getText());
+		if(locate(X) instanceof JSAccess)
+			resetAccess(id,(JSAccess)locate(X));
+		else resetAccess(id,TOP_ACCESS);
+		return ANY;
+	}
+	
+	@Override 
+	public JSAst visitPRWhen(PajamaParser.PRWhenContext ctx){
+		System.err.println("visitPRWhen");
+		return visit(ctx.expr());
+	}
 
     @Override
     public JSAst visitPatNum(PajamaParser.PatNumContext ctx) {
@@ -600,6 +630,18 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		if(listArgs.size()>1) return APP(nom,ARRAY(listArgs));
 		return APP(nom,listArgs);
     }
+    
+    @Override 
+    public JSAst visitArrayAccessExpr(PajamaParser.ArrayAccessExprContext ctx){
+		System.err.println("visitArrayAccessExpr");
+		return ACCESS(visit(ctx.idSingle()),NUM(Integer.valueOf(ctx.NUMBER().getText())));
+    }
+    
+    @Override 
+    public JSAst visitEmptyArrayExpr(PajamaParser.EmptyArrayExprContext ctx){
+		System.err.println("visitArrayAccessExpr");
+		return EMPTY_ARRAY;
+    }
 	
 	 @Override
     public JSAst visitRelOperation(PajamaParser.RelOperationContext ctx) {
@@ -631,7 +673,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 				
 				
 				//return APP(FUNCTION(FORMALS(X),RET(((JSPoint) point).y)),X);//Algo asi debe ser.
-			if(((JSPoint)point).y.getClass().getName()=="pajama.js.JSString") return ((JSPoint) point).y; //Pienso que esto nos podría servir para resolver el problema del when, no es lo mas elegante, pero al menos así podemos distinguir de cuando hay que devolver una funcion a cuando hay que devolver una variable sola.
+			if(((JSPoint)point).y instanceof JSString) return ((JSPoint) point).y; //Pienso que esto nos podría servir para resolver el problema del when, no es lo mas elegante, pero al menos así podemos distinguir de cuando hay que devolver una funcion a cuando hay que devolver una variable sola.
 		return FUNCTION(FORMALS(X),RET(((JSPoint) point).y)); 
 			//return point;//El problema es que me esta tirando una function en vez de tirar 666 de una vez. o sea hay que hacer apply en algun lado.
 				//Falta hacer que sirva para 1<2<3 (1<2 && 2<3)

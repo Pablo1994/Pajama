@@ -4,11 +4,12 @@ function foo8(a) {
   return (function($x) {
     return (function($n, $c) {
       if ((function($x) {
-        return (patListTestEmpty)($x);
+        return (patListTestEmpty)(arguments[0]);
       })($n)) return (function($x) {
         return true;
       })($n);
       else return ($c)($n);
     })($x, fail);
   })(a);
-}
+}(expectEQ)("foo8([])", "true");
+(expectFAIL)("foo8([42])");

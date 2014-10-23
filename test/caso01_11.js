@@ -6,7 +6,8 @@ function foo11(a) {
       if ((function($x) {
         return (patListTest)([function($x) {
           return ($x[0] === 1);
-        }, function($x) {
+        },
+        any && function($x) {
           return ($x[1] > 0);
         }], $x);
       })($n)) return (function($x) {
@@ -15,4 +16,5 @@ function foo11(a) {
       else return ($c)($n);
     })($x, fail);
   })(a);
-}
+}(expectEQ)("foo11([1, 41])", "42");
+(expectFAIL)("foo11([1, 0])");

@@ -59,9 +59,9 @@ function expectFAIL(expr, f) {
     return false;
 }
 
-function unshift(a, x) {
-    a.unshift(x);
-    return a;
+function unshift(a) {
+    print(a[0].unshift(a[1]));
+    return a[0];
 }
 
 function identidad(x) x;

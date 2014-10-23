@@ -23,4 +23,3 @@ function sumar(a) {
     });
   })(a);
 }(expectEQ)("sumar([1,2,3])", "6");
-(expectFAIL)("sumar(1)");
