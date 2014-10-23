@@ -92,7 +92,7 @@ arithMonom     : arithSingle (operTimesDiv arithSingle)*
 arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
                    | arithSingle '(' (params | args)? ')' 	#FunCallExpr
-                   | '[' ']'					#EmptyAccessExpr
+                   | '['']'						#EmptyArrayExpr
                    | ID '[' NUMBER ']' 			#ArrayAccessExpr
 		           | arithSingle ('.' ID)+ 		#ObjectAccess
 				   | idSingle 					#idExpr

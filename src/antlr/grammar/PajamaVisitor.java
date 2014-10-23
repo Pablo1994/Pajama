@@ -268,6 +268,13 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpr(@NotNull PajamaParser.ExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code EmptyArrayExpr}
+	 * labeled alternative in {@link PajamaParser#arithSingle}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyArrayExpr(@NotNull PajamaParser.EmptyArrayExprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PajamaParser#key}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

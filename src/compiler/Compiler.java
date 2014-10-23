@@ -582,6 +582,12 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("visitArrayAccessExpr");
 		return ACCESS(locate(ID(ctx.ID().getText())),NUM(Integer.valueOf(ctx.NUMBER().getText())));
     }
+    
+    @Override 
+    public JSAst visitEmptyArrayExpr(PajamaParser.EmptyArrayExprContext ctx){
+		System.err.println("visitArrayAccessExpr");
+		return EMPTY_ARRAY;
+    }
 	
 	 @Override
     public JSAst visitRelOperation(PajamaParser.RelOperationContext ctx) {

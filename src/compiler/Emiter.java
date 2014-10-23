@@ -67,6 +67,7 @@ public interface Emiter{
 	default JSAccess TOP(){
 		return TOP_ACCESS;
 	}
+	final JSArray EMPTY_ARRAY = new JSArray();
 	final JSId ANY = new JSId("any");
     final JSBool TRUE = new JSBool(true);
     final JSBool FALSE = new JSBool(false);
