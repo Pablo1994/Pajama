@@ -469,6 +469,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	public JSAst visitPattPairList(PajamaParser.PattPairListContext ctx){
 		System.err.println("visitPattObject");
 		String lastOffsetS = this.offsetS;
+		String lastOffsetS = this.offsetS;
         //if (this.offsetS != "") {//nota: cambiar a >= en algun momento.
         //    this.push(this.offsetS);
         //}
@@ -661,7 +662,26 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 		System.err.println("visitArrayAccessExpr");
 		return ACCESS(visit(ctx.idSingle()),NUM(Integer.valueOf(ctx.NUMBER().getText())));
     }
+	
+	@Override 
+    public JSAst visitObjectAccess(PajamaParser.ObjectAccessContext ctx){
+		System.err.println("visitArrayAccessExpr");
+		JSAst objeto = visit(ctx.arithSingle());
+		List<JSAst> accesos = ctx.ID()
+		            .stream()
+		            .map((o) -> (JSAst) visit(o))
+		            .collect(Collectors.toList());	
+		accesos.stream().forEach((a)->
+			
+		});			
+
+ 
+		//return ACCESS(visit(ctx.idSingle()),NUM(Integer.valueOf(ctx.NUMBER().getText())));
+		return OACCESS()
+    }
     
+	
+	
     @Override 
     public JSAst visitEmptyArrayExpr(PajamaParser.EmptyArrayExprContext ctx){
 		System.err.println("visitArrayAccessExpr");

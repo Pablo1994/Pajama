@@ -54,7 +54,7 @@ pattEmpty :
 ;
 pattPairEmpty:
 ;
-pattRestArray : pattArray | pattRestID
+pattRestArray : pattArray | pattRestID | pattAny
 
 ;
 pattPairList    : pattPair (',' pattPair)*
