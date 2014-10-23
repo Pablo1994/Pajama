@@ -35,6 +35,12 @@ public class Pajamac {
         PajamaParser parser = new PajamaParser(tokens);
         ParseTree tree = parser.rules();
 
+        System.err.print(".______      ___            __       ___      .___  ___.      ___      \n"
+	+ "|   _  \\    /   \\          |  |     /   \\     |   \\/   |     /   \\     \n"
+	+ "|  |_)  |  /  ^  \\         |  |    /  ^  \\    |  \\  /  |    /  ^  \\    \n"
+	+ "|   ___/  /  /_\\  \\  .--.  |  |   /  /_\\  \\   |  |\\/|  |   /  /_\\  \\   \n"
+	+ "|  |     /  _____  \\ |  `--'  |  /  _____  \\  |  |  |  |  /  _____  \\  \n"
+	+ "| _|    /__/     \\__\\ \\______/  /__/     \\__\\ |__|  |__| /__/     \\__\\");
         System.err.println("Pajamac");
         Compiler comp = new Compiler();
         comp.compile(tree);
@@ -42,8 +48,7 @@ public class Pajamac {
 
  	System.out.flush();
         System.setOut(old);
-        String str = baos.toString().replace("$", "_");        
-        System.out.println(JsBeautify.jsBeautify(str, 2).replace("_", "$"));
+        System.out.println(JsBeautify.jsBeautify(baos.toString().replace("$", "_"), 2).replace("_", "$"));
 
     }
 }
