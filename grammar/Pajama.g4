@@ -93,7 +93,7 @@ arithSingle    :     '-' arithOperation			#DecExpr
                    | '(' expr ')'				#ParExpr
                    | arithSingle '(' (params | args)? ')' 	#FunCallExpr
                    | '['']'						#EmptyArrayExpr
-                   | ID '[' NUMBER ']' 			#ArrayAccessExpr
+                   | idSingle '[' NUMBER ']' 			#ArrayAccessExpr
 		           | arithSingle ('.' ID)+ 		#ObjectAccess
 				   | idSingle 					#idExpr
 				   | object						#ObjectExpr

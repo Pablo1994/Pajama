@@ -91,7 +91,10 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 			//if((JSId)(entry.getAccess().left).getValue().equals(this.ruleName.getValue()))
 			System.err.println("--NON NULL ENTRY");
 			if(entry.getAccess().equals(TOP_ACCESS)){
-				return entry.getAccess();}
+				System.err.println("Aquí está llegando bien");
+				return entry.getAccess();
+				
+			}
             return entry.getAccess().setId(X);
         }
 		System.err.println("NULL ENTRY RETURNING ID");
@@ -273,6 +276,9 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
 	@Override 
 	public JSAst visitPRSave(PajamaParser.PRSaveContext ctx){
 		JSId id = ID(ctx.ID().getText());
+		if(locate(X) instanceof JSAccess)
+			resetAccess(id,(JSAccess)locate(X));
+		else resetAccess(id,TOP_ACCESS);
 		return ANY;
 	}
 	
@@ -580,7 +586,7 @@ public class Compiler extends PajamaBaseVisitor<JSAst> implements Emiter {
     @Override 
     public JSAst visitArrayAccessExpr(PajamaParser.ArrayAccessExprContext ctx){
 		System.err.println("visitArrayAccessExpr");
-		return ACCESS(locate(ID(ctx.ID().getText())),NUM(Integer.valueOf(ctx.NUMBER().getText())));
+		return ACCESS(visit(ctx.idSingle()),NUM(Integer.valueOf(ctx.NUMBER().getText())));
     }
     
     @Override 

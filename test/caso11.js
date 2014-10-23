@@ -8,7 +8,7 @@ function second(a) {
           return true;
         })($x.slice(2));
       })($n)) return (function($x) {
-        return x[1];
+        return arguments[0][1];
       })($n);
       else return ($c)($n);
     })($x, fail);
