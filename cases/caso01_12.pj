@@ -14,11 +14,8 @@ rule foo11(a){
 expectEQ("foo8([])", "true");
 expectFAIL("foo8([42])");
 
-<<<<<<< HEAD
-expectEQ("foo9([42])", "42");
-=======
+
 expectEQ("foo9([42])", "true");
->>>>>>> b5d030630394032bfd84e1be55513586e71ec300
 expectFAIL("foo9([42, []])");
 
 expectEQ("foo10([1,2,3,4])", "2,3,4");

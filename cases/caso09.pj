@@ -1,6 +1,6 @@
 // Compara dos objetos por una propiedad fija name
 rule compareObjects(o){
-     case [{name:x}, {name:y when y==x}] -> true
+     case [{name:x},{name:y} when y==x]-> true
    | case _ -> false
 }
 

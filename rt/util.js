@@ -1,10 +1,10 @@
 function patListTest(lp, n) {
     print("PattList " + n);
     var res = Array.isArray(n) && n.length == lp.length && lp.reduce(function(z, p) z && p(n), true);
-    if (!Array.isArray(n)) print("no es array");
-    if (!n.length == lp.length) print("**Largos diferentes: " + n.length + " " + lp.length);
-    if (!lp.reduce(function(z, p) z && p(n), true)) print("**El reduce no pego");
-    print("**Resultado: " + res);
+    //if (!Array.isArray(n)) print("no es array");
+    //if (!n.length == lp.length) print("**Largos diferentes: " + n.length + " " + lp.length);
+    //if (!lp.reduce(function(z, p) z && p(n), true)) print("**El reduce no pego");
+    //print("**Resultado: " + res);
     return res;
 }
 
@@ -12,9 +12,9 @@ function patObjectTest(lp, o) {
      //print("pot "+ Object.keys(o));
 		//print("ENTRANDO A PATOBJECTEST DE "+Object.keys(lp));
 		//print("OBJETO A COMPARAR TIENE LLAVES "+Object.keys(o));
-  if(typeof o !='object') {print("NOT AN OBJECT");return false;}
+  //if(typeof o !='object') {print("NOT AN OBJECT");return false;}
   var keys = Object.keys(lp);
-  var resultado =  keys.reduce(function(z, k)z&&lp[k](o), true)
+  var resultado =  keys.reduce(function(z, k)z&&lp[k](o), true);
   //print("PATOBJECTEST DE "+keys+" ME DIO "+resultado);	
   return resultado;
 }
@@ -34,8 +34,8 @@ function fail() {
 
 function any(x) {
     //print("Any("+x+")");
-    if (x == null) print("ANY(" + x + ")==NULL");
-    if (patListTestEmpty(x)) print("ANY(" + x + ")==PATLISTESTEMPTY");
+    //if (x == null) print("ANY(" + x + ")==NULL");
+    //if (patListTestEmpty(x)) print("ANY(" + x + ")==PATLISTESTEMPTY");
     return x != null;
 }
 
@@ -60,9 +60,10 @@ function expectFAIL(expr, f) {
 }
 
 function unshift(a) {
-    print(a[0].unshift(a[1]));
+    a[0].unshift(a[1]);
     return a[0];
 }
+
 
 function identidad(x) x;
 

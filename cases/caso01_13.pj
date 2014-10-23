@@ -1,14 +1,7 @@
-<<<<<<< HEAD
+
 rule foo(n){
      case r -> r
 }
 
 expectEQ("foo(42)", "42");
-=======
-rule foo(n){
-     case r -> r
-}
-
-expectEQ("foo(42)", "42");
->>>>>>> b5d030630394032bfd84e1be55513586e71ec300
 expectEQ("foo([42])", "42");
