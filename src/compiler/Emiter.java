@@ -55,6 +55,9 @@ public interface Emiter{
 	default JSAst EMPTY_PREDICATE(JSAst x){
 		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY, x)));
 	}
+	default JSAst KEY_PATT(JSAst key,JSAst value){
+		return new JSPair(key,value);
+	}
 	default JSAst EMPTY_OBJECT_PREDICATE(JSAst x){
 		return FUNCTION(FORMALS(X), RET(APP(ISEMPTY_OBJECT, x)));
 	}

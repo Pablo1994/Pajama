@@ -39,7 +39,8 @@ pattRestID : ID
 ;
 pattAny : '_'
 ;
-pattObject : '{' pattPairOrEmpty '}'		
+pattObject : '{' pattPairOrEmpty '}'	
+;	
 //pattObject        :  '{' pattPairs? '}';
 
 
@@ -50,6 +51,8 @@ pattPairOrEmpty : pattPairEmpty | pattPairList
 pattList : pattern (',' pattern)* ( '|' pattRestArray)?
 ;
 pattEmpty :
+;
+pattPairEmpty:
 ;
 pattRestArray : pattArray | pattRestID
 ;

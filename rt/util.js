@@ -8,14 +8,15 @@ function patListTest(lp, n) {
     return res;
 }
 
-function patObjectTest(lp, n) {
-    print("PattObject: " + n);
-	if(typeof n!='object')return false;
-	var keys = Object.keys(n);	
-    var res = keys.reduce(function(z, p) z && p(n), true);
-    if (!lp.reduce(function(z, p) z && p(n), true)) print("**El reduce no pego");
-    print("**Resultado: " + res);
-    return res;
+function patObjectTest(lp, o) {
+     //print("pot "+ Object.keys(o));
+		//print("ENTRANDO A PATOBJECTEST DE "+Object.keys(lp));
+		//print("OBJETO A COMPARAR TIENE LLAVES "+Object.keys(o));
+  if(typeof o !='object') {print("NOT AN OBJECT");return false;}
+  var keys = Object.keys(lp);
+  var resultado =  keys.reduce(function(z, k)z&&lp[k](o), true)
+  //print("PATOBJECTEST DE "+keys+" ME DIO "+resultado);	
+  return resultado;
 }
 function patObjectTestEmpty(o){
 	return typeof o==='object'&&Object.keys(o).length==0;

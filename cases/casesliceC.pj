@@ -1,7 +1,0 @@
-rule casesliceCA(a){
-	 case [1,[2|p]] -> p
-}
-
-rule casesliceCB(a){
-	 case [1,[p|[2]]] -> p
-}

@@ -1,3 +1,0 @@
-rule foo(n){
-   case 1 when 1<2 -> 666 
-}

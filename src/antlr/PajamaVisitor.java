@@ -186,6 +186,12 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPRSave(@NotNull PajamaParser.PRSaveContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattPairList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattPairList(@NotNull PajamaParser.PattPairListContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code PatTrue}
 	 * labeled alternative in {@link PajamaParser#pattConstant}.
 	 * @param ctx the parse tree
@@ -249,6 +255,12 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPattList(@NotNull PajamaParser.PattListContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattPairEmpty}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattPairEmpty(@NotNull PajamaParser.PattPairEmptyContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code PAny}
 	 * labeled alternative in {@link PajamaParser#pattInit}.
 	 * @param ctx the parse tree
@@ -273,6 +285,12 @@ public interface PajamaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTestStatement(@NotNull PajamaParser.TestStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PajamaParser#pattPairOrEmpty}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPattPairOrEmpty(@NotNull PajamaParser.PattPairOrEmptyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code DecExpr}
 	 * labeled alternative in {@link PajamaParser#arithSingle}.

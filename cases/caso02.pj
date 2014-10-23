@@ -16,7 +16,7 @@ rule largo(a){
 
 rule largoRC(a){
     case [[], c] -> c
-	| case [[_|r], c] -> largoRC([r, c+1])
+	| case [[_|r], c] -> larRC([r, c+1])
 }
 rule largo2(a){
     case a -> largoRC([a, 0])
